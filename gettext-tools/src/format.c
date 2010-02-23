@@ -44,6 +44,7 @@ struct formatstring_parser *formatstring_parsers[NFORMATS] =
   /* format_scheme */           &formatstring_scheme,
   /* format_smalltalk */        &formatstring_smalltalk,
   /* format_java */             &formatstring_java,
+  /* format_javascript */       &formatstring_javascript,
   /* format_csharp */           &formatstring_csharp,
   /* format_awk */              &formatstring_awk,
   /* format_pascal */           &formatstring_pascal,
