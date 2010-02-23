@@ -51,7 +51,7 @@ write-qt.h \
 po-time.h plural-table.h lang-table.h format.h filters.h \
 xgettext.h x-c.h x-po.h x-sh.h x-python.h x-lisp.h x-elisp.h x-librep.h \
 x-scheme.h x-smalltalk.h x-java.h x-properties.h x-csharp.h x-awk.h x-ycp.h \
-x-tcl.h x-perl.h x-php.h x-stringtable.h x-rst.h x-glade.h
+x-tcl.h x-perl.h x-php.h x-stringtable.h x-rst.h x-glade.h x-javascript.h
 
 EXTRA_DIST += FILES project-id ChangeLog.0
 
@@ -114,7 +114,7 @@ format-c.c format-sh.c format-python.c format-lisp.c format-elisp.c \
 format-librep.c format-scheme.c format-java.c format-csharp.c format-awk.c \
 format-pascal.c format-ycp.c format-tcl.c format-perl.c format-perl-brace.c \
 format-php.c format-gcc-internal.c format-gfc-internal.c \
-format-qt.c format-qt-plural.c format-kde.c format-boost.c
+format-qt.c format-qt-plural.c format-kde.c format-boost.c format-javascript.c
 
 # libgettextsrc contains all code that is needed by at least two programs.
 libgettextsrc_la_SOURCES = \
@@ -152,7 +152,7 @@ endif
 xgettext_SOURCES += \
   x-c.c x-po.c x-sh.c x-python.c x-lisp.c x-elisp.c x-librep.c x-scheme.c \
   x-smalltalk.c x-java.c x-csharp.c x-awk.c x-ycp.c x-tcl.c x-perl.c x-php.c \
-  x-rst.c x-glade.c
+  x-rst.c x-glade.c x-javascript.c
 if !WOE32DLL
 msgattrib_SOURCES = msgattrib.c
 else

@@ -81,6 +81,7 @@
 #include "x-scheme.h"
 #include "x-smalltalk.h"
 #include "x-java.h"
+#include "x-javascript.h"
 #include "x-properties.h"
 #include "x-csharp.h"
 #include "x-awk.h"
@@ -153,6 +154,7 @@ static flag_context_list_table_ty flag_table_elisp;
 static flag_context_list_table_ty flag_table_librep;
 static flag_context_list_table_ty flag_table_scheme;
 static flag_context_list_table_ty flag_table_java;
+static flag_context_list_table_ty flag_table_javascript;
 static flag_context_list_table_ty flag_table_csharp;
 static flag_context_list_table_ty flag_table_awk;
 static flag_context_list_table_ty flag_table_ycp;
@@ -322,6 +324,7 @@ main (int argc, char *argv[])
   init_flag_table_librep ();
   init_flag_table_scheme ();
   init_flag_table_java ();
+  init_flag_table_javascript ();
   init_flag_table_csharp ();
   init_flag_table_awk ();
   init_flag_table_ycp ();
@@ -345,6 +348,7 @@ main (int argc, char *argv[])
         x_librep_extract_all ();
         x_scheme_extract_all ();
         x_java_extract_all ();
+        x_javascript_extract_all ();
         x_csharp_extract_all ();
         x_awk_extract_all ();
         x_tcl_extract_all ();
@@ -410,6 +414,7 @@ main (int argc, char *argv[])
         x_librep_keyword (optarg);
         x_scheme_keyword (optarg);
         x_java_keyword (optarg);
+        x_javascript_keyword (optarg);
         x_csharp_keyword (optarg);
         x_awk_keyword (optarg);
         x_tcl_keyword (optarg);
@@ -1639,6 +1644,11 @@ xgettext_record_flag (const char *optionstring)
                     break;
                   case format_java:
                     flag_context_list_table_insert (&flag_table_java, 0,
+                                                    name_start, name_end,
+                                                    argnum, value, pass);
+                    break;
+                  case format_javascript:
+                    flag_context_list_table_insert (&flag_table_javascript, 0,
                                                     name_start, name_end,
                                                     argnum, value, pass);
                     break;
@@ -3113,6 +3123,7 @@ language_to_extractor (const char *name)
     SCANNERS_SCHEME
     SCANNERS_SMALLTALK
     SCANNERS_JAVA
+    SCANNERS_JAVASCRIPT
     SCANNERS_PROPERTIES
     SCANNERS_CSHARP
     SCANNERS_AWK
@@ -3196,6 +3207,7 @@ extension_to_language (const char *extension)
     EXTENSIONS_SCHEME
     EXTENSIONS_SMALLTALK
     EXTENSIONS_JAVA
+    EXTENSIONS_JAVASCRIPT
     EXTENSIONS_PROPERTIES
     EXTENSIONS_CSHARP
     EXTENSIONS_AWK
