@@ -53,6 +53,7 @@ enum format_type
   format_scheme,
   format_smalltalk,
   format_java,
+  format_javascript,
   format_csharp,
   format_awk,
   format_pascal,
@@ -66,7 +67,7 @@ enum format_type
   format_kde,
   format_boost
 };
-#define NFORMATS 22	/* Number of format_type enum values.  */
+#define NFORMATS 23	/* Number of format_type enum values.  */
 extern DLL_VARIABLE const char *const format_language[NFORMATS];
 extern DLL_VARIABLE const char *const format_language_pretty[NFORMATS];
 
