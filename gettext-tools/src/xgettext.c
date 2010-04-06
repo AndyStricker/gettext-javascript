@@ -1,5 +1,5 @@
 /* Extracts strings from C source file to Uniforum style .po file.
-   Copyright (C) 1995-1998, 2000-2009 Free Software Foundation, Inc.
+   Copyright (C) 1995-1998, 2000-2010 Free Software Foundation, Inc.
    Written by Ulrich Drepper <drepper@gnu.ai.mit.edu>, April 1995.
 
    This program is free software: you can redistribute it and/or modify
@@ -63,6 +63,7 @@
 #include "write-po.h"
 #include "write-properties.h"
 #include "write-stringtable.h"
+#include "color.h"
 #include "format.h"
 #include "propername.h"
 #include "gettext.h"
@@ -196,6 +197,7 @@ static const struct option long_options[] =
   { "add-location", no_argument, &line_comment, 1 },
   { "boost", no_argument, NULL, CHAR_MAX + 11 },
   { "c++", no_argument, NULL, 'C' },
+  { "color", optional_argument, NULL, CHAR_MAX + 14 },
   { "copyright-holder", required_argument, NULL, CHAR_MAX + 1 },
   { "debug", no_argument, &do_debug, 1 },
   { "default-domain", required_argument, NULL, 'd' },
@@ -232,6 +234,7 @@ static const struct option long_options[] =
   { "strict", no_argument, NULL, 'S' },
   { "string-limit", required_argument, NULL, 'l' },
   { "stringtable-output", no_argument, NULL, CHAR_MAX + 7 },
+  { "style", required_argument, NULL, CHAR_MAX + 15 },
   { "trigraphs", no_argument, NULL, 'T' },
   { "version", no_argument, NULL, 'V' },
   { "width", required_argument, NULL, 'w', },
@@ -339,6 +342,7 @@ main (int argc, char *argv[])
       {
       case '\0':                /* Long option.  */
         break;
+
       case 'a':
         x_c_extract_all ();
         x_sh_extract_all ();
@@ -356,6 +360,7 @@ main (int argc, char *argv[])
         x_php_extract_all ();
         x_glade_extract_all ();
         break;
+
       case 'c':
         if (optarg == NULL)
           {
@@ -371,36 +376,47 @@ main (int argc, char *argv[])
               ++comment_tag;
           }
         break;
+
       case 'C':
         language = "C++";
         break;
+
       case 'd':
         default_domain = optarg;
         break;
+
       case 'D':
         dir_list_append (optarg);
         break;
+
       case 'e':
         message_print_style_escape (false);
         break;
+
       case 'E':
         message_print_style_escape (true);
         break;
+
       case 'f':
         files_from = optarg;
         break;
+
       case 'F':
         sort_by_filepos = true;
         break;
+
       case 'h':
         do_help = true;
         break;
+
       case 'i':
         message_print_style_indent ();
         break;
+
       case 'j':
         join_existing = true;
         break;
+
       case 'k':
         if (optarg != NULL && *optarg == '\0')
           /* Make "--keyword=" work like "--keyword" and "-k".  */
@@ -426,26 +442,33 @@ main (int argc, char *argv[])
         else
           some_additional_keywords = true;
         break;
+
       case 'l':
         /* Accepted for backward compatibility with 0.10.35.  */
         break;
+
       case 'L':
         language = optarg;
         break;
+
       case 'm':
         /* -m takes an optional argument.  If none is given "" is assumed. */
         msgstr_prefix = optarg == NULL ? "" : optarg;
         break;
+
       case 'M':
         /* -M takes an optional argument.  If none is given "" is assumed. */
         msgstr_suffix = optarg == NULL ? "" : optarg;
         break;
+
       case 'n':
         line_comment = 1;
         break;
+
       case 'o':
         output_file = optarg;
         break;
+
       case 'p':
         {
           size_t len = strlen (optarg);
@@ -459,18 +482,23 @@ main (int argc, char *argv[])
             output_dir = xasprintf ("%s/", optarg);
         }
         break;
+
       case 's':
         sort_by_msgid = true;
         break;
+
       case 'S':
         message_print_style_uniforum ();
         break;
+
       case 'T':
         x_c_trigraphs ();
         break;
+
       case 'V':
         do_version = true;
         break;
+
       case 'w':
         {
           int value;
@@ -480,50 +508,74 @@ main (int argc, char *argv[])
             message_page_width_set (value);
         }
         break;
+
       case 'x':
         read_exclusion_file (optarg);
         break;
+
       case CHAR_MAX + 1:        /* --copyright-holder */
         copyright_holder = optarg;
         break;
+
       case CHAR_MAX + 2:        /* --foreign-user */
         copyright_holder = "";
         break;
+
       case CHAR_MAX + 3:        /* --from-code */
         xgettext_global_source_encoding = po_charset_canonicalize (optarg);
         if (xgettext_global_source_encoding == NULL)
           xgettext_global_source_encoding = po_charset_ascii;
         break;
+
       case CHAR_MAX + 4:        /* --no-wrap */
         message_page_width_ignore ();
         break;
+
       case CHAR_MAX + 5:        /* --msgid-bugs-address */
         msgid_bugs_address = optarg;
         break;
+
       case CHAR_MAX + 6:        /* --properties-output */
         output_syntax = &output_format_properties;
         break;
+
       case CHAR_MAX + 7:        /* --stringtable-output */
         output_syntax = &output_format_stringtable;
         break;
+
       case CHAR_MAX + 8:        /* --flag */
         xgettext_record_flag (optarg);
         break;
+
       case CHAR_MAX + 9:        /* --qt */
         recognize_format_qt = true;
         break;
+
       case CHAR_MAX + 10:       /* --kde */
         recognize_format_kde = true;
         break;
+
       case CHAR_MAX + 11:       /* --boost */
         recognize_format_boost = true;
         break;
+
       case CHAR_MAX + 12:       /* --package-name */
         package_name = optarg;
         break;
+
       case CHAR_MAX + 13:       /* --package-version */
         package_version = optarg;
         break;
+
+      case CHAR_MAX + 14: /* --color */
+        if (handle_color_option (optarg) || color_test_mode)
+          usage (EXIT_FAILURE);
+        break;
+
+      case CHAR_MAX + 15: /* --style */
+        handle_style_option (optarg);
+        break;
+
       default:
         usage (EXIT_FAILURE);
         /* NOTREACHED */
@@ -878,6 +930,12 @@ Language specific options:\n"));
       printf ("\n");
       printf (_("\
 Output details:\n"));
+      printf (_("\
+      --color                 use colors and other text attributes always\n\
+      --color=WHEN            use colors and other text attributes if WHEN.\n\
+                              WHEN may be 'always', 'never', 'auto', or 'html'.\n"));
+      printf (_("\
+      --style=STYLEFILE       specify CSS style rule file for --color\n"));
       printf (_("\
   -e, --no-escape             do not use C escapes in output (default)\n"));
       printf (_("\

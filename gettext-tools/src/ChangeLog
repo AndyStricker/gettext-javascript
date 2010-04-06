@@ -1,3 +1,83 @@
+2010-03-31  Guido Flohr  <guido@imperia.net>
+
+	Improve how xgettext handles Perl syntax ambiguities.
+	* x-perl.c(enum token_type_ty): New enumeration items
+	token_type_number, token_type_object.
+	(struct token_ty): New field 'last_type'.
+	(token2string): Handle token_type_number, token_type_object.
+	(free_token): Likewise.
+	(prefer_division_over_regexp): Remove variable.
+	(extract_variable): Recognize token of type token_type_object.
+	(prefer_regexp_over_division): New function.
+	(last_token_type): Renamed from last_token.
+	(x_perl_prelex): Assign the token's last_type. Recognize token of type
+	token_type_number. Don't special-case "grep" and "split". Invoke
+	prefer_regexp_over_division for disambiguation.
+	(token_stack_dump): Handle token_type_number, token_type_object.
+	(x_perl_lex): Assign the token's last_type. Update last_token_type
+	intelligently.
+	(collect_message): Invoke prefer_regexp_over_division for
+	disambiguation.
+	(extract_balanced): Don't set last_token_type here. Handle
+	token_type_number, token_type_object.
+	(extract_perl): Initialize last_token_type here.
+	Reported by Guillem Jover <guillem@debian.org> via Santiago Vila.
+
+	* x-perl.c (x_perl_prelex): Clarify interpolate_keywords arguments.
+
+	* x-perl.c (eaten_here): Renamed from here_eaten.
+	(phase1_getc, get_here_document, skip_pod, extract_perl): Update.
+
+2010-03-13  Bruno Haible  <bruno@clisp.org>
+
+	New options --color, --style for many programs.
+	* msgattrib.c: Include color.h.
+	(long_options): Add options --color, --style.
+	(main): Implement them.
+	(usage): Document them.
+	* msgcomm.c: Include color.h.
+	(long_options): Add options --color, --style.
+	(main): Implement them.
+	(usage): Document them.
+	* msgconv.c: Include color.h.
+	(long_options): Add options --color, --style.
+	(main): Implement them.
+	(usage): Document them.
+	* msgen.c: Include color.h.
+	(long_options): Add options --color, --style.
+	(main): Implement them.
+	(usage): Document them.
+	* msgfilter.c: Include color.h.
+	(long_options): Add options --color, --style.
+	(main): Implement them.
+	(usage): Document them.
+	* msggrep.c: Include color.h.
+	(long_options): Add options --color, --style.
+	(main): Implement them.
+	(usage): Document them.
+	* msginit.c: Include color.h.
+	(long_options): Add options --color, --style.
+	(main): Implement them.
+	(usage): Document them.
+	* msgmerge.c: Include color.h.
+	(long_options): Add options --color, --style.
+	(main): Implement them.
+	(usage): Document them.
+	* msgunfmt.c: Include color.h.
+	(long_options): Add options --color, --style.
+	(main): Implement them.
+	(usage): Document them.
+	* msguniq.c: Include color.h.
+	(long_options): Add options --color, --style.
+	(main): Implement them.
+	(usage): Document them.
+	* xgettext.c: Include color.h.
+	(long_options): Add options --color, --style.
+	(main): Implement them.
+	(usage): Document them.
+	Reported by Kalle Olavi Niemitalo <kon@iki.fi>
+	via Santiago Vila <sanvila@unex.es>.
+
 2010-02-20  Bruno Haible  <bruno@clisp.org>
 
 	* plural-table.c (plural_table): Add Bulgarian.

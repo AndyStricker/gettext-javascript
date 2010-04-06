@@ -25,6 +25,11 @@ Version 0.18 - January 2008
   to the message.  Translators can produce better translations when they know
   that the numeric argument is small.
 
+* Colorized PO files:
+  msgattrib, msgcomm, msgconv, msgen, msgfilter, msggrep, msginit, msgmerge,
+  msgunfmt, msguniq, xgettext now have options --color and --style, like msgcat
+  has since version 0.17.
+
 * msgmerge is up to 10 times faster when the PO and POT files are large.
   This speedup was contributed by Ralf Wildenhues.
 
@@ -46,6 +51,12 @@ Version 0.18 - January 2008
 
 * The po/Makevars file has a new field MSGMERGE_OPTIONS, that can be used
   to adjust msgmerge's operation.
+
+* The use of the macro AM_GNU_GETTEXT without 'external' argument and the
+  --intl option of the gettextize program are deprecated and will be removed
+  in the next release. Instead of including the intl sources in your package,
+  we suggest making the libintl library an (optional) prerequisite of your
+  package.
 
 * Updated the meaning of 'gcc-internal-format' to match GCC 4.3.
 
