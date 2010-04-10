@@ -654,7 +654,7 @@ phase3_getc ()
             else
               {
                 phase2_ungetc (c);
-                return c;
+                return '/';
               }
         }
       else
@@ -903,6 +903,8 @@ enum token_type_ty
   token_type_comma,             /* , */
   token_type_lbracket,          /* [ */
   token_type_rbracket,          /* ] */
+  token_type_regexp,            /* /.../ */
+  token_type_operator,          /* + - * / % . < > = ~ ! | & ? : ^ */
   token_type_string,            /* "abc", 'abc' */
   token_type_symbol,            /* symbol, number */
   token_type_other              /* misc. operator */
@@ -1233,6 +1235,64 @@ static int open_pbb;
 static token_ty phase5_pushback[1];
 static int phase5_pushback_length;
 
+static token_type_ty last_token_type = token_type_other;
+
+static void
+phase5_scan_regexp ()
+{
+    int c;
+    /* scan for end of RegExp literal ('/') */
+    for (;;)
+      {
+        c = phase3_getc ();
+        if (c == '/')
+          break;
+        switch (c)
+          {
+          case UEOF:
+            error_with_progname = false;
+            error (0, 0, _("%s:%d: warning: RegExp literal terminated too early"),
+                   logical_file_name, line_number);
+            error_with_progname = true;
+            return;
+
+          case '\n':
+            error_with_progname = false;
+            error (0, 0, _("%s:%d: warning: RegExp literal contains newline"),
+                   logical_file_name, line_number);
+            error_with_progname = true;
+            return;
+
+          case '\\':
+            {
+              int c2 = phase3_getc ();
+              if (c2 == UEOF)
+                {
+                  error_with_progname = false;
+                  error (0, 0, _("%s:%d: warning: RegExp literal terminated too early"),
+                         logical_file_name, line_number);
+                  error_with_progname = true;
+                  return;
+                }
+            }
+            break;
+
+          default:
+            continue;
+          }
+      }
+    /* scan for modifier flags (ECMA-262 5th section 15.10.4.1) */
+    c = phase3_getc ();
+    if (c == 'g' || c == 'i' || c == 'm')
+      {
+        return;
+      }
+    else
+      {
+        phase3_ungetc (c);
+      }
+}
+
 static void
 phase5_get (token_ty *tp)
 {
@@ -1241,6 +1301,7 @@ phase5_get (token_ty *tp)
   if (phase5_pushback_length)
     {
       *tp = phase5_pushback[--phase5_pushback_length];
+      last_token_type = tp->type;
       return;
     }
 
@@ -1252,7 +1313,7 @@ phase5_get (token_ty *tp)
       switch (c)
         {
         case UEOF:
-          tp->type = token_type_eof;
+          tp->type = last_token_type = token_type_eof;
           return;
 
         case ' ':
@@ -1268,7 +1329,7 @@ phase5_get (token_ty *tp)
              joining.  */
           if (open_pbb > 0)
             continue;
-          tp->type = token_type_other;
+          tp->type = last_token_type = token_type_other;
           return;
         }
 
@@ -1283,7 +1344,7 @@ phase5_get (token_ty *tp)
             if (!(c1 >= '0' && c1 <= '9'))
               {
 
-                tp->type = token_type_other;
+                tp->type = last_token_type = token_type_other;
                 return;
               }
           }
@@ -1347,7 +1408,7 @@ phase5_get (token_ty *tp)
               }
             buffer[bufpos] = '\0';
             tp->string = xstrdup (buffer);
-            tp->type = token_type_symbol;
+            tp->type = last_token_type = token_type_symbol;
             return;
           }
 
@@ -1357,7 +1418,6 @@ phase5_get (token_ty *tp)
             int quote_char;
             bool interpret_ansic;
             bool interpret_unicode;
-            bool triple;
             unsigned int backslash_counter;
 
             case '"': case '\'':
@@ -1387,41 +1447,67 @@ phase5_get (token_ty *tp)
               free_mixed_string_buffer (&literal);
               tp->comment = add_reference (savable_comment);
               lexical_context = lc_outside;
-              tp->type = token_type_string;
+              tp->type = last_token_type = token_type_string;
               return;
           }
 
+        /* Identify operators. The multiple character ones are simply ignored
+         * as they are recognized here and are otherwise not relevant. */
+        /* FALLTHROUGH */
+        case '+': case '-': case '*': /* '/' is not listed here! */
+        case '%': case '<': case '>': case '=':
+        case '~': case '!': case '|': case '&': case '^':
+        case '?': case ':':
+          tp->type = last_token_type = token_type_operator;
+          return;
+
+        case '/':
+          /* Either a division operator or the start of a RegExp literal.
+           * If the '/' token is spotted after a symbol it's a division,
+           * otherwise it's a regex */
+          if (last_token_type == token_type_symbol)
+            {
+              tp->type = last_token_type = token_type_operator;
+              return;
+            }
+          else
+            {
+              phase5_scan_regexp ();
+              tp->type = last_token_type = token_type_other;
+              return;
+            }
+
         case '(':
           open_pbb++;
-          tp->type = token_type_lparen;
+          tp->type = last_token_type = token_type_lparen;
           return;
 
         case ')':
           if (open_pbb > 0)
             open_pbb--;
-          tp->type = token_type_rparen;
+          tp->type = last_token_type = token_type_rparen;
           return;
 
         case ',':
-          tp->type = token_type_comma;
+          tp->type = last_token_type = token_type_comma;
           return;
 
         case '[': case '{':
           open_pbb++;
-          tp->type = (c == '[' ? token_type_lbracket : token_type_other);
+          tp->type = last_token_type = (c == '[' ? token_type_lbracket : token_type_other);
           return;
 
         case ']': case '}':
           if (open_pbb > 0)
             open_pbb--;
-          tp->type = (c == ']' ? token_type_rbracket : token_type_other);
+          tp->type = last_token_type = (c == ']' ? token_type_rbracket : token_type_other);
           return;
 
         default:
           /* We could carefully recognize each of the 2 and 3 character
              operators, but it is not necessary, as we only need to recognize
              gettext invocations.  Don't bother.  */
-          tp->type = token_type_other;
+          tp->type = last_token_type = token_type_other;
           return;
         }
     }
@@ -1640,6 +1726,9 @@ extract_balanced (message_list_ty *mlp,
           xgettext_current_source_encoding = xgettext_current_file_source_encoding;
           return true;
 
+        /* FALLTHROUGH */
+        case token_type_regexp:
+        case token_type_operator:
         case token_type_other:
           next_context_iter = null_context_list_iterator;
           state = 0;
