@@ -8,10 +8,16 @@ trap 'rm -fr $tmpfiles' 1 2 3 15
 
 tmpfiles="$tmpfiles xg-js-2.js"
 cat <<\EOF > xg-js-2.js
-// Javascript has buildint regex that could conflict with string matching
-var s1 = /"/.match(_("This is the first string to extract"));
-var s2 = /['a-b]/.match(_('This is the second string to extract'));
-var c = 35 / 2 / 8 + _("This is the third string to extract").length
+// RegExp literals containing string quotes must not desync the parser
+var d = 1 / 2 / 4;
+var s = " x " + /^\d/.match("0815").replace(/[a-z]/g, '@');
+var s1 = /"/.match(_("RegExp test string #1"));
+var s2 = /'/.match(_("RegExp test string #2"));
+var s3 = /['a-b]/.match(_('RegExp test string #3'));
+var s4 = /["a-b]/.match(_('RegExp test string #4'));
+var s5 = /[a-b']/.match(_('RegExp test string #5'));
+var s6 = /[a-b"]/.match(_('RegExp test string #6'));
+var c = 35 / 2 / 8 + _("RegExp test string #7").length / 32.0;
 EOF
 
 tmpfiles="$tmpfiles xg-js-2.err xg-js-2.tmp xg-js-2.pot"
@@ -42,13 +48,25 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-msgid "Extract this first string"
+msgid "RegExp test string #1"
 msgstr ""
 
-msgid "Extract this second string"
+msgid "RegExp test string #2"
 msgstr ""
 
-msgid "Extract this thirth string"
+msgid "RegExp test string #3"
+msgstr ""
+
+msgid "RegExp test string #4"
+msgstr ""
+
+msgid "RegExp test string #5"
+msgstr ""
+
+msgid "RegExp test string #6"
+msgstr ""
+
+msgid "RegExp test string #7"
 msgstr ""
 EOF
 
