@@ -861,8 +861,9 @@ Choice of input file language:\n"));
   -L, --language=NAME         recognise the specified language\n\
                                 (C, C++, ObjectiveC, PO, Shell, Python, Lisp,\n\
                                 EmacsLisp, librep, Scheme, Smalltalk, Java,\n\
-                                JavaProperties, C#, awk, YCP, Tcl, Perl, PHP,\n\
-                                GCC-source, NXStringTable, RST, Glade)\n"));
+                                JavaProperties, JavaScript, C#, awk, YCP, Tcl,\n\
+                                Perl, PHP, GCC-source, NXStringTable, RST,\n\
+                                Glade)\n"));
       printf (_("\
   -C, --c++                   shorthand for --language=C++\n"));
       printf (_("\
