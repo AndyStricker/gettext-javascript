@@ -82,6 +82,7 @@ TESTS = gettext-1 gettext-2 gettext-3 gettext-4 gettext-5 gettext-6 gettext-7 \
 	xgettext-glade-1 xgettext-glade-2 xgettext-glade-3 xgettext-glade-4 \
 	xgettext-java-1 xgettext-java-2 xgettext-java-3 xgettext-java-4 \
 	xgettext-java-5 xgettext-java-6 xgettext-java-7 \
+	xgettext-javascript-1 xgettext-javascript-2 xgettext-javascript-3 \
 	xgettext-librep-1 xgettext-librep-2 \
 	xgettext-lisp-1 xgettext-lisp-2 \
 	xgettext-objc-1 xgettext-objc-2 \
