@@ -9,9 +9,15 @@ trap 'rm -fr $tmpfiles' 1 2 3 15
 tmpfiles="$tmpfiles xg-js-2.js"
 cat <<\EOF > xg-js-2.js
 // The usual way to concatenate strings is the plus '+' sign
-var s = _("This" + " whole "
+var s1 = _("Concatenation #1 " "- String part added");
+var s2 = _('Concatenation #2 ' + '- String part added');
+var s3 = _('Concatenation #3 '
+           '- String part added');
+var s4 = _('Concatenation #4 ' +
+           '- String part added');
+var s5 = _("This" + " whole "
           + "string" +
-         'should' + " be " + 'extracted');
+         ' should' + " be " + 'extracted');
 EOF
 
 tmpfiles="$tmpfiles xg-js-2.err xg-js-2.tmp xg-js-2.pot"
@@ -42,13 +48,19 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-msgid "Extract this first string"
+msgid "Concatenation #1 - String part added"
 msgstr ""
 
-msgid "Extract this second string"
+msgid "Concatenation #2 - String part added"
 msgstr ""
 
-msgid "Extract this thirth string"
+msgid "Concatenation #3 - String part added"
+msgstr ""
+
+msgid "Concatenation #4 - String part added"
+msgstr ""
+
+msgid "This whole string should be extracted"
 msgstr ""
 EOF
 
