@@ -1419,7 +1419,6 @@ phase5_get (token_ty *tp)
             int quote_char;
             bool interpret_ansic;
             bool interpret_unicode;
-            bool triple;
             unsigned int backslash_counter;
 
             case '"': case '\'':
