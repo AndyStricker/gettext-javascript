@@ -918,6 +918,7 @@ struct token_ty
   char *string;         /* for token_type_string, token_type_symbol */
   refcounted_string_list_ty *comment;   /* for token_type_string */
   int line_number;
+  int operator;         /* for token_type_operator */
 };
 
 /* Javascript provides strings with either double or single quotes.
@@ -1232,7 +1233,7 @@ phase7_getuc (int quote_char,
 /* Number of pending open parentheses/braces/brackets.  */
 static int open_pbb;
 
-static token_ty phase5_pushback[1];
+static token_ty phase5_pushback[2];
 static int phase5_pushback_length;
 
 static token_type_ty last_token_type = token_type_other;
@@ -1458,6 +1459,7 @@ phase5_get (token_ty *tp)
         case '%': case '<': case '>': case '=':
         case '~': case '!': case '|': case '&': case '^':
         case '?': case ':':
+          tp->operator = c;
           tp->type = last_token_type = token_type_operator;
           return;
 
@@ -1467,6 +1469,7 @@ phase5_get (token_ty *tp)
            * otherwise it's a regex */
           if (last_token_type == token_type_symbol)
             {
+              tp->operator = '/';
               tp->type = last_token_type = token_type_operator;
               return;
             }
@@ -1542,7 +1545,20 @@ x_javascript_lex (token_ty *tp)
       size_t len;
 
       phase5_get (&tmp);
-      if (tmp.type != token_type_string)
+      if (tmp.type == token_type_operator && tmp.operator == '+')
+        {
+          /* allow concatenation of strings using the plus '+' operator */
+          token_ty tmp2;
+          phase5_get (&tmp2);
+          if (tmp2.type != token_type_string)
+            {
+                phase5_unget (&tmp2);
+                phase5_unget (&tmp);
+                return;
+            }
+          memcpy(&tmp, &tmp2, sizeof(tmp));
+        }
+      else if (tmp.type != token_type_string)
         {
           phase5_unget (&tmp);
           return;
