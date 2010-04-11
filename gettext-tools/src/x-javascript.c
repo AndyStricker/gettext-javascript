@@ -1467,7 +1467,8 @@ phase5_get (token_ty *tp)
           /* Either a division operator or the start of a RegExp literal.
            * If the '/' token is spotted after a symbol it's a division,
            * otherwise it's a regex */
-          if (last_token_type == token_type_symbol)
+          if (last_token_type == token_type_symbol ||
+              last_token_type == token_type_rparen)
             {
               tp->operator = '/';
               tp->type = last_token_type = token_type_operator;
