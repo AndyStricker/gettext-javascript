@@ -1468,7 +1468,8 @@ phase5_get (token_ty *tp)
            * If the '/' token is spotted after a symbol it's a division,
            * otherwise it's a regex */
           if (last_token_type == token_type_symbol ||
-              last_token_type == token_type_rparen)
+              last_token_type == token_type_rparen ||
+              last_token_type == token_type_rbracket)
             {
               tp->operator = '/';
               tp->type = last_token_type = token_type_operator;
