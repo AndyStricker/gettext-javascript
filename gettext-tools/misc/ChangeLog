@@ -1,3 +1,146 @@
+2010-06-04  Bruno Haible  <bruno@clisp.org>
+
+	* gettext-0.18.1 released.
+
+2010-06-04  Bruno Haible  <bruno@clisp.org>
+
+	Don't assume GNU tar.
+	* convert-archive.in (TAR, TAR_OPTIONS): New variables.
+	Reported by Ryan Schmidt <ryandesign@macports.org>.
+
+2010-06-04  Bruno Haible  <bruno@clisp.org>
+
+	* autopoint.in: Update for 0.18.1.
+
+2010-06-03  Bruno Haible  <bruno@clisp.org>
+
+	Deprecate the --with-cvs option.
+	* autopoint.in: Update comments.
+	* add-to-archive: Update archive.dir.tar.gz, not archive.cvs.tar.gz.
+	* Makefile.am (CLEANFILES): Add archive.cvs.tar.gz instead of
+	archive.dir.tar.gz.
+	(EXTRA_DIST): Add archive.dir.tar.gz instead of archive.cvs.tar.gz.
+	(archive.dir.tar.gz): Adapted from archive.cvs.tar.gz rule.
+	(archive.git.tar.gz, archive.cvs.tar.gz): Generate from
+	archive.dir.tar.gz.
+
+2010-05-26  Bruno Haible  <bruno@clisp.org>
+
+	Interoperability with newer versions of 'cvs'.
+	* autopoint.in: Unset some more environment variables. Set
+	CVS_SIGN_COMMITS to empty.
+	* convert-archive.in: Likewise.
+
+2010-05-16  Bruno Haible  <bruno@clisp.org>
+
+	convert-archive: Don't publicize the builder's name and email.
+	* convert-archive.in: Unset GIT_CONFIG and set dummy user.name and
+	user.email parameters.
+	Reported by Santiago Vila <sanvila@unex.es>.
+
+2010-05-16  Bruno Haible  <bruno@clisp.org>
+
+	Avoid keyword substitution in cvs archives created by convert-archive.
+	* convert-archive.in: When creating a cvs archive, use "cvs admin -ko"
+	on all files.
+
+2010-05-16  Bruno Haible  <bruno@clisp.org>
+
+	Make convert-archive more robust.
+	* convert-archive.in: Report a fatal error in many error conditions.
+	Reported by Santiago Vila <sanvila@unex.es>.
+
+2010-05-16  Bruno Haible  <bruno@clisp.org>
+
+	* convert-archive.in: Remove known 'rlog' warning from error output.
+	(func_version): Update copyright years.
+
+2010-05-09  Bruno Haible  <bruno@clisp.org>
+
+	* gettext-0.18 released.
+
+2010-05-09  Bruno Haible  <bruno@clisp.org>
+
+	* autopoint.in: Update for 0.18.
+
+2010-05-09  Bruno Haible  <bruno@clisp.org>
+
+	* autopoint.in (func_version): Bump copyright year.
+
+2010-05-08  Bruno Haible  <bruno@clisp.org>
+
+	* po-mode.el (po-mode-version-string): Bump to 2.2.
+
+2010-05-08  Noritada Kobayashi  <nori1@dolphin.c.u-tokyo.ac.jp>
+
+	po-mode: Fix bug in po-previous-translated-entry function.
+	* po-mode.el (po-previous-translated-entry): Use correct regular
+	expression.
+	Reported via Santiago Vila in
+	<http://lists.gnu.org/archive/html/bug-gnu-utils/2008-08/msg00039.html>.
+
+2010-05-08  Noritada Kobayashi  <nori1@dolphin.c.u-tokyo.ac.jp>
+            Bruno Haible  <bruno@clisp.org>
+
+	po-mode: Optionally delete previous untranslated comment when editing.
+	* po-mode.el (po-auto-delete-previous-msgid): New customizable
+	variable.
+	(po-any-previous-msgctxt-regexp, po-any-previous-msgid-regexp,
+	po-any-previous-msgid_plural-regexp): New variables.
+	(po-msgid-to-msgstr, po-kill-msgstr, po-yank-msgstr, po-subedit-exit):
+	Invoke po-maybe-delete-previous-untranslated after po-set-msgstr-form.
+	(po-unfuzzy): Invoke po-maybe-delete-previous-untranslated.
+	(po-previous-untranslated-region-for, po-previous-untranslated-regions,
+	po-delete-previous-untranslated, po-maybe-delete-previous-untranslated):
+	New functions.
+	Reported in
+	<http://lists.gnu.org/archive/html/bug-gnu-utils/2008-05/msg00032.html>.
+
+2010-05-08  Bruno Haible  <bruno@clisp.org>
+
+	po-mode: Fix po-msgid-to-msgstr on plural entries.
+	* po-mode.el (po-get-msgid_plural): New function.
+	(po-msgid-to-msgstr): Use it.
+
+2010-05-08  Noritada Kobayashi  <nori1@dolphin.c.u-tokyo.ac.jp>
+            Bruno Haible  <bruno@clisp.org>
+
+	po-mode: Fix po-get-msgid function in plural entries.
+	* po-mode.el (po-get-msgid): Use po-start-of-msgid_plural as end
+	pointer, if it is set.
+	Reported in
+	<http://lists.gnu.org/archive/html/bug-gnu-utils/2008-05/msg00031.html>.
+
+2010-05-08  Noritada Kobayashi  <nori1@dolphin.c.u-tokyo.ac.jp>
+            Bruno Haible  <bruno@clisp.org>
+
+	po-mode: Determine position of "msgid_plural" line in current entry.
+	* po-mode.el (po-start-of-msgid_plural): New variable.
+	(po-any-msgid_plural-regexp): New variable.
+	(po-mode): Make po-start-of-msgid_plural buffer-local.
+	(po-find-span-of-entry): Set also po-start-of-msgid_plural.
+	Based on patch in
+	<http://lists.gnu.org/archive/html/bug-gnu-utils/2008-05/msg00031.html>.
+
+2010-05-08  Bruno Haible  <bruno@clisp.org>
+
+	* po-mode.el (po-get-msgstr-flavor): Preserve the point's position.
+
+2010-05-08  Noritada Kobayashi  <nori1@dolphin.c.u-tokyo.ac.jp>
+
+	Fix failure of po-msgid-to-msgstr just after opening a buffer.
+	* po-mode.el (po-msgstr-form-flavor): Remove variable.
+	(po-get-msgstr-form): Do not call po-get-msgstr-flavor.
+	(po-set-msgstr-form): Call po-get-msgstr-flavor function here.
+	Reported in
+	<http://lists.gnu.org/archive/html/bug-gnu-utils/2008-05/msg00028.html>.
+
+2010-05-08  Bruno Haible  <bruno@clisp.org>
+
+	* po-mode.el (po-edit-string): Assign major mode text-mode to the
+	subedit buffer.
+	Reported by Kenichi Handa <handa@m17n.org>.
+
 2010-03-28  Bruno Haible  <bruno@clisp.org>
 
 	* gettexize.in: Warn about use of --intl option.

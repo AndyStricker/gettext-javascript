@@ -1,3 +1,52 @@
+2010-06-04  Bruno Haible  <bruno@clisp.org>
+
+	* gettext-0.18.1 released.
+
+2010-05-19  Bruno Haible  <bruno@clisp.org>
+
+	Link with libunistring, if it exists.
+	* modules/gettext-tools-misc (lib_LDFLAGS): Add LTLIBUNISTRING.
+
+2010-05-24  Bruno Haible  <bruno@clisp.org>
+
+	Use the newest regex module from gnulib.
+	* modules/gettext-tools-misc (Files): Remove m4/mbrtowc.m4 and
+	m4/memchr.m4.
+
+2010-05-24  Bruno Haible  <bruno@clisp.org>
+
+	Use regex module without dependency on 'malloc'.
+	* lib/regex_internal.h.diff: New file.
+	* lib/regexec.c.diff: New file.
+	* modules/regex.diff: New file.
+	* Makefile.am (EXTRA_DIST): Add them.
+
+2010-05-23  Bruno Haible  <bruno@clisp.org>
+
+	Do regex matching purely with regex, not regex + dfa + kwset.
+	* modules/gettext-tools-misc (Files): Remove m4/hard-locale.m4.
+
+2010-05-09  Bruno Haible  <bruno@clisp.org>
+
+	* gettext-0.18 released.
+
+2010-05-09  Bruno Haible  <bruno@clisp.org>
+
+	Avoid test suite failure on mingw.
+	* tests/test-term-ostream-xterm: Convert CR/LF to LF before comparing.
+
+2010-05-09  Bruno Haible  <bruno@clisp.org>
+
+	Export rpl_optind, rpl_optarg from DLL depending on platform.
+	* modules/gettext-tools-misc (AM_CPPFLAGS): Augment by
+	GETTEXTLIB_EXPORTS_FLAGS.
+
+2010-05-09  Bruno Haible  <bruno@clisp.org>
+
+	Avoid compilation error in libgettextpo directory on Solaris 8.
+	* lib/unistd.in.h.diff: New file.
+	* Makefile.am (EXTRA_DIST): Add it.
+
 2010-03-28  Bruno Haible  <bruno@clisp.org>
 
 	* modules/closeout (Depends-on): Add stdlib, remove exit.

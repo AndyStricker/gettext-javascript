@@ -1,3 +1,28 @@
+2010-06-04  Bruno Haible  <bruno@clisp.org>
+
+	* gettext-0.18.1 released.
+
+2010-05-24  Bruno Haible  <bruno@clisp.org>
+
+	Use the newest regex module from gnulib.
+	* libgrep.m4: Remove file.
+	* regex.m4: Remove file.
+	* Makefile.am (EXTRA_DIST): Remove them.
+
+2010-05-23  Bruno Haible  <bruno@clisp.org>
+
+	Do regex matching purely with regex, not regex + dfa + kwset.
+	* libgrep.m4 (gt_LIBGREP): Don't invoke gl_HARD_LOCALE.
+
+2010-05-09  Bruno Haible  <bruno@clisp.org>
+
+	* gettext-0.18 released.
+
+2010-04-02  Bruno Haible  <bruno@clisp.org>
+
+	* Makefile.am (aclocal_DATA): Take lib-*.m4 from the
+	gettext-runtime/gnulib-m4/ directory.
+
 2009-12-25  Bruno Haible  <bruno@clisp.org>
 
 	* Makefile.am (aclocal_DATA): Add fcntl-o.m4. Remove fcntl_h.m4.

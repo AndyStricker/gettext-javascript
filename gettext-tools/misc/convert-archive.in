@@ -1,6 +1,6 @@
 #! /bin/sh
 #
-# Copyright (C) 2009 Free Software Foundation, Inc.
+# Copyright (C) 2009-2010 Free Software Foundation, Inc.
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -46,7 +46,7 @@ Report bugs to <bug-gnu-gettext@gnu.org>."
 func_version ()
 {
   echo "$progname (GNU $package) $version"
-  echo "Copyright (C) 2009 Free Software Foundation, Inc.
+  echo "Copyright (C) 2009-2010 Free Software Foundation, Inc.
 License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
 This is free software: you are free to change and redistribute it.
 There is NO WARRANTY, to the extent permitted by law."
@@ -90,7 +90,8 @@ mkdir "$unpacked" || {
 # Unpack the original archive.
 case "$from" in
   dir)
-    gzip -d -c < "$fromfile" | (cd "$unpacked" && tar xf -)
+    gzip -d -c < "$fromfile" | (cd "$unpacked" && tar xf -) \
+      || func_fatal_error "file copy failed"
     ;;
 
   cvs)
@@ -121,20 +122,29 @@ case "$from" in
     unset CVS_CLIENT_LOG
     unset CVS_CLIENT_PORT
     unset CVS_IGNORE_REMOTE_ROOT
+    unset CVS_LOCAL_BRANCH_NUM
+    unset CVS_NOBASES
     unset CVS_PASSFILE
     unset CVS_PASSWORD
+    unset CVS_PROXY_PORT
     unset CVS_RCMD_PORT
     unset CVS_RSH
     unset CVS_SERVER
     unset CVS_SERVER_SLEEP
+    CVS_SIGN_COMMITS=
+    export CVS_SIGN_COMMITS
+    unset CVS_SSH
+    unset CVS_VERIFY_CHECKOUTS
+    unset CVS_VERIFY_TEMPLATE
     unset CVSIGNORE
     unset CVSREAD
+    unset CVSREADONLYFS
     unset CVSUMASK
     unset CVSWRAPPERS
 
     # Need to pass -d "$CVSROOT", because there may be a CVS directory in the
     # current directory.
-    cvs -d "$CVSROOT" init
+    cvs -d "$CVSROOT" init || func_fatal_error "cvs init failed"
     gzip -d -c < "$fromfile" | (cd "$cvs_dir" && tar xf -)
 
     # A witness that contains all versions.
@@ -150,19 +160,24 @@ ba
 }
 /^keyword substitution:/q'
     sed_extract_tags_from_log2='s/^	\([^:]*\):.*/\1/'
+    rlog_harmless_warning_regex="warning: Unknown phrases like \`commitid \.\.\.;' are present\."
     tags=`
-      LC_ALL=C rlog "$cvs_dir"/archive/$witness,v | \
-      sed -n -e "$sed_extract_tags_from_log1" | \
-      sed -e "$sed_extract_tags_from_log2"`
+      ( LC_ALL=C rlog "$cvs_dir"/archive/$witness,v 2>&1 1>&3 \
+        | grep -v "$rlog_harmless_warning_regex" 1>&2 ) 3>&1 \
+      | sed -n -e "$sed_extract_tags_from_log1" \
+      | sed -e "$sed_extract_tags_from_log2"`
+    test -n "$tags" || func_fatal_error "no release tags found"
     sed_tag_to_version='s/_/./g'
     for tag in $tags; do
       if test $tag != release; then
         version=`echo "$tag" | sed -e "$sed_tag_to_version"`
         (cd "$work_dir"
-         (cvs -d "$CVSROOT" checkout -r"$tag" archive > /dev/null) 2>&1 | grep -v '^cvs checkout: Updating'
+         cvs -d "$CVSROOT" checkout -r"$tag" archive > /dev/null 2> cvs.err \
+           || { cat cvs.err 1>&2; exit 1; }
+         cat cvs.err | grep -v '^cvs checkout: Updating'
          find archive -name CVS -type d -print | xargs rm -rf
          rm -rf CVS
-        )
+        ) || func_fatal_error "cvs checkout failed"
         mv "$work_dir"/archive "$unpacked/$version"
       fi
     done
@@ -182,17 +197,21 @@ ba
       fi
     }
 
-    mkdir "$work_dir/master"
+    mkdir "$work_dir/master" || func_fatal_error "mkdir failed"
     gzip -d -c < "$fromfile" | (cd "$work_dir/master" && tar xf -)
     cd "$work_dir"
-    for tag in `cd master && git tag`; do
+    tags=`cd master && git tag`
+    test -n "$tags" || func_fatal_error "no release tags found"
+    for tag in $tags; do
       if test $tag != empty; then
         version=$tag
-        (cd master && git checkout -q $tag)
+        (cd master && git checkout -q $tag) \
+          || func_fatal_error "git checkout failed"
         rm -f master/.gitignore
         mv master/.git .git
-        mkdir "$unpacked/$version"
-        (cd master && tar cf - .) | (cd "$unpacked/$version" && tar xf -)
+        mkdir "$unpacked/$version" || func_fatal_error "mkdir failed"
+        (cd master && tar cf - .) | (cd "$unpacked/$version" && tar xf -) \
+          || func_fatal_error "file copy failed"
         mv .git master/.git
       fi
     done
@@ -201,10 +220,24 @@ ba
     ;;
 esac
 
+# Find a good 'tar' program.
+existing_file=gettext-0.10.35/ABOUT-NLS
+TAR=tar
+TAR_OPTIONS=
+for prog in tar gnutar gtar; do
+  if (cd "$unpacked" && $prog cf - --owner=root --group=root "$existing_file") >/dev/null 2>&1; then
+    TAR=$prog
+    TAR_OPTIONS='--owner=root --group=root'
+    break
+  fi
+done
+
 # Create the target archive.
 case "$to" in
   dir)
-    (cd "$unpacked" && tar cf - --owner=root --group=root *) | gzip -c -9 > "$tofile"
+    (cd "$unpacked" && $TAR cf - $TAR_OPTIONS *) \
+      | gzip -c -9 > "$tofile" \
+      || func_fatal_error "archive creation failed"
     ;;
 
   cvs)
@@ -242,7 +275,7 @@ case "$to" in
 
     # Need to pass -d "$CVSROOT", because there may be a CVS directory in the
     # current directory.
-    cvs -d "$CVSROOT" init
+    cvs -d "$CVSROOT" init || func_fatal_error "cvs init failed"
 
     # Add the contents of the unpacked directory to the repository.
     (cd "$unpacked"
@@ -250,24 +283,39 @@ case "$to" in
        cvsver=`echo "$version" | sed -e 's/\./_/g'`
        (cd $version
         CVSUSER=$cvsuser LD_PRELOAD=$cvsuser_hack \
-        cvs -d "$CVSROOT" import -m "Import $version" archive release "$cvsver"
-       )
+        cvs -d "$CVSROOT" import -m "Import $version" archive release "$cvsver" > /dev/null
+       ) || func_fatal_error "cvs import failed"
+       # In order to avoid keyword substitution, we have to use "cvs admin"
+       # in a temporary checkout.
+       mkdir tmpcheckout || func_fatal_error "mkdir failed"
+       (cd tmpcheckout \
+        && cvs -d "$CVSROOT" checkout -r"$cvsver" archive > /dev/null \
+        && cvs -d "$CVSROOT" admin -ko `find . -type f -print | sed -e 's,^\./,,' | grep -v '^CVS/' | grep -v '/CVS/'` > /dev/null
+       ) 2> cvs.err || { cat cvs.err 1>&2; func_fatal_error "cvs checkout or admin failed"; }
+       rm -rf tmpcheckout
      done
     )
-    (cd "$cvs_dir" && tar cf - --owner=root --group=root archive) | gzip -c -9 > "$tofile"
+    (cd "$cvs_dir" && $TAR cf - $TAR_OPTIONS archive) \
+      | gzip -c -9 > "$tofile" \
+      || func_fatal_error "archive creation failed"
     rm -rf "$cvs_dir" cvsuser.so
     ;;
 
   git)
     git_dir=`pwd`/tmpgit$$
-    mkdir "$git_dir"
+    mkdir "$git_dir" || func_fatal_error "mkdir failed"
+    unset GIT_CONFIG
     (cd "$git_dir" && {
       git init -q
+      git config user.name 'GNU Gettext Build'
+      git config user.email 'bug-gnu-gettext@gnu.org'
       touch .gitignore
       git add .
-      git commit --author="Bruno Haible <bruno@clisp.org>" --message="Empty directory" 2>&1 | grep -v '^ '
+      git commit --author="Bruno Haible <bruno@clisp.org>" \
+                 --message="Empty directory" 2>&1 \
+        | grep -v '^ '
       git tag empty
-    })
+    }) || func_fatal_error "git init failed"
     sed_remove_leading_dot='s,^\./,,'
     sed_remove_git_infrastructure='/^\.git/d'
     (cd "$unpacked"
@@ -280,13 +328,18 @@ case "$to" in
          fi
          tar xf -
          git add .
-         git commit --author="Bruno Haible <bruno@clisp.org>" --message="Import $version" 2>&1 | grep -v '^ '
+         git commit --author="Bruno Haible <bruno@clisp.org>" \
+                    --message="Import $version" 2>&1 \
+           | grep -v '^ '
          git tag "$version"
-       })
+       }) || func_fatal_error "file copy into git repository failed"
      done
     )
-    (cd "$git_dir" && git reset -q --hard empty && git repack -a -d -q)
-    (cd "$git_dir" && tar cf - --owner=root --group=root .git) | gzip -c -9 > "$tofile"
+    (cd "$git_dir" && git reset -q --hard empty && git repack -a -d -q) \
+      || func_fatal_error "git reset or repack failed"
+    (cd "$git_dir" && $TAR cf - $TAR_OPTIONS .git) \
+      | gzip -c -9 > "$tofile" \
+      || func_fatal_error "archive creation failed"
     rm -rf "$git_dir"
     ;;
 esac

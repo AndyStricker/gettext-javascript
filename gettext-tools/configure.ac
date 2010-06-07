@@ -1,5 +1,5 @@
 dnl Configuration for the gettext-tools directory of GNU gettext
-dnl Copyright (C) 1995-1999, 2000-2009 Free Software Foundation, Inc.
+dnl Copyright (C) 1995-1999, 2000-2010 Free Software Foundation, Inc.
 dnl
 dnl This program is free software: you can redistribute it and/or modify
 dnl it under the terms of the GNU General Public License as published by
@@ -84,6 +84,7 @@ AC_EXEEXT
 
 dnl Make sure we see all GNU and Solaris extensions.
 gl_EARLY
+grgl_EARLY
 gtpo_EARLY
 
 dnl Check for build configuration.
@@ -153,6 +154,7 @@ AC_SUBST([MSGMERGE_LIBM])
 
 dnl Checks for header files, functions and declarations.
 gl_INIT
+grgl_INIT
 gtpo_INIT
 
 dnl Checks for header files.
@@ -175,7 +177,6 @@ AC_CHECK_FUNCS([select])
 AC_FUNC_VFORK
 gt_SIGINFO
 gt_SETLOCALE
-gt_LIBGREP
 
 AC_C_BIGENDIAN([endianness=1], [endianness=0],
   [echo "AC-C-BIGENDIAN fails to work on your system." | sed -e 's,-,_,g' 1>&2
@@ -221,6 +222,16 @@ if test $is_woe32dll = yes; then
   AC_DEFINE([WOE32DLL], [1],
     [Define when --enable-shared is used on mingw or Cygwin.])
 fi
+
+dnl woe32dll/gettextlib-exports.c needs to know whether the getopt facility
+dnl is replaced by gnulib. GETOPT_H is set by gl_FUNC_GETOPT_POSIX, inside
+dnl gl_INIT.
+if test -n "$GETOPT_H"; then
+  GETTEXTLIB_EXPORTS_FLAGS="-DGNULIB_DEFINED_GETOPT"
+else
+  GETTEXTLIB_EXPORTS_FLAGS=
+fi
+AC_SUBST([GETTEXTLIB_EXPORTS_FLAGS])
 
 dnl Put some default definitions into config.h.
 AH_TOP([
@@ -303,29 +314,44 @@ aclocaldir='${datadir}/aclocal'
 AC_SUBST([aclocaldir])
 
 dnl Check how to install the set of previous versions, for autopoint.
-AC_ARG_WITH([cvs],
-  [  --without-cvs           don't use cvs to compress the infrastructure archive],
-  [gt_use_cvs=$withval],
-  [gt_use_cvs=maybe])
 AC_ARG_WITH([git],
-  [  --with-git              use git to compress the infrastructure archive],
+  [  --without-git           don't use git to compress the infrastructure archive],
   [gt_use_git=$withval],
-  [gt_use_git=no])
-if test "$gt_use_cvs" != no && test "$gt_use_cvs" != maybe; then
-  # --with-cvs is specified. Even if --with-git is also specified, we use the
-  # cvs format, because it yields smaller archives than the git format.
-  ARCHIVE_FORMAT=cvs
+  [gt_use_git=maybe])
+AC_ARG_WITH([cvs],
+  [  --with-cvs              use cvs to compress the infrastructure archive
+                          (deprecated)],
+  [gt_use_cvs=$withval],
+  [gt_use_cvs=no])
+# The CVS format is deprecated, because "cvs init" does not work in all
+# circumstances
+# (see <http://lists.gnu.org/archive/html/bug-cvs/2010-05/msg00003.html>)
+# and we are not allowed to distribute the cvs infrastructure files ourselves
+# (see <http://lists.gnu.org/archive/html/bug-cvs/2010-06/msg00011.html>).
+if test "$gt_use_git" != no && test "$gt_use_git" != maybe; then
+  # --with-git is specified. Even if --with-cvs is also specified, we use the
+  # git format.
+  ARCHIVE_FORMAT=git
 else
-  if test "$gt_use_git" != no; then
-    # --with-git is specified.
-    ARCHIVE_FORMAT=git
+  if test "$gt_use_cvs" != no; then
+    # --with-cvs is specified.
+    ARCHIVE_FORMAT=cvs
   else
-    # Neither --with-cvs not --with-git is specified.
-    if test "$gt_use_cvs" != no; then
-      # --without-cvs is not specified. Use cvs format.
-      ARCHIVE_FORMAT=cvs
+    # Neither --with-git nor --with-cvs is specified.
+changequote(,)dnl
+    if test "$gt_use_git" != no \
+       && (git --version) >/dev/null 2>&1 \
+       && { case `git --version | sed -e 's/^[^0-9]*//'` in
+              0.* | 1.[0-5].*) false ;;
+              *) true ;;
+            esac
+          }; then
+changequote([,])dnl
+      # --without-git is not specified, and the git program exists
+      # in version 1.6 or newer. Use git format.
+      ARCHIVE_FORMAT=git
     else
-      # --without-cvs is specified.
+      # --without-git is specified, or the git program is missing.
       ARCHIVE_FORMAT=dir
     fi
   fi

@@ -49,7 +49,7 @@ TESTS = gettext-1 gettext-2 gettext-3 gettext-4 gettext-5 gettext-6 gettext-7 \
 	msgfmt-properties-1 \
 	msgfmt-qt-1 msgfmt-qt-2 \
 	msggrep-1 msggrep-2 msggrep-3 msggrep-4 msggrep-5 msggrep-6 msggrep-7 \
-	msggrep-8 \
+	msggrep-8 msggrep-9 msggrep-10 \
 	msginit-1 msginit-2 \
 	msgmerge-1 msgmerge-2 msgmerge-3 msgmerge-4 msgmerge-5 msgmerge-6 \
 	msgmerge-7 msgmerge-8 msgmerge-9 msgmerge-10 msgmerge-11 msgmerge-12 \
@@ -145,7 +145,7 @@ XGETTEXT = ../src/xgettext
 # For debugging memory leaks and memory allocation bugs.
 # You should build with --disable-shared when using valgrind.
 CHECKER =
-#CHECKER = valgrind --tool=memcheck --suppressions=$(srcdir)/../gnulib-lib/malloca.valgrind --num-callers=20 --leak-check=yes --leak-resolution=high --show-reachable=yes
+#CHECKER = valgrind --tool=memcheck --suppressions=$(srcdir)/../gnulib-lib/malloca.valgrind --suppressions=$(srcdir)/../gnulib-lib/libunistring.valgrind --num-callers=20 --leak-check=yes --leak-resolution=high --show-reachable=yes
 #CHECKER = valgrind --tool=massif --format=html --depth=10 --alloc-fn=xmalloc --alloc-fn=xrealloc --stacks=no
 
 TESTS_ENVIRONMENT = top_srcdir=$(top_srcdir) \
@@ -224,13 +224,13 @@ gettext_5_prg_LDADD = ../gnulib-lib/libgettextlib.la $(LDADD)
 gettext_6_prg_SOURCES = gettext-6-prg.c
 gettext_6_prg_CFLAGS = $(gettext_6_prg_CFLAGS_@HAVE_NEWLOCALE@)
 gettext_6_prg_CFLAGS_1 = -DUSE_POSIX_THREADS
-gettext_6_prg_LDADD = $(gettext_6_prg_LDADD_@HAVE_NEWLOCALE@)
-gettext_6_prg_LDADD_1 = $(LDADD) -lpthread
+gettext_6_prg_LDADD = ../gnulib-lib/libgettextlib.la $(LDADD) $(gettext_6_prg_LDADD_@HAVE_NEWLOCALE@)
+gettext_6_prg_LDADD_1 = -lpthread
 gettext_7_prg_SOURCES = gettext-7-prg.c
 gettext_7_prg_CFLAGS = $(gettext_7_prg_CFLAGS_@HAVE_NEWLOCALE@)
 gettext_7_prg_CFLAGS_1 = -DUSE_POSIX_THREADS
-gettext_7_prg_LDADD = $(gettext_7_prg_LDADD_@HAVE_NEWLOCALE@)
-gettext_7_prg_LDADD_1 = $(LDADD) -lpthread
+gettext_7_prg_LDADD = ../gnulib-lib/libgettextlib.la $(LDADD) $(gettext_7_prg_LDADD_@HAVE_NEWLOCALE@)
+gettext_7_prg_LDADD_1 = -lpthread
 gettext_8_prg_SOURCES = gettext-8-prg.c
 gettext_8_prg_LDADD = ../gnulib-lib/libgettextlib.la $(LDADD)
 cake_SOURCES = plural-1-prg.c setlocale.c

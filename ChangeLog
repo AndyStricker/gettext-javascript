@@ -1,3 +1,93 @@
+2010-06-04  Bruno Haible  <bruno@clisp.org>
+
+	* gettext-0.18.1 released.
+
+2010-06-04  Bruno Haible  <bruno@clisp.org>
+
+	* DEPENDENCIES: Add entries for 'tar' and 'gzip'.
+
+2010-06-04  Bruno Haible  <bruno@clisp.org>
+
+	* autogen.sh: For libgrep, don't use --avoid of modules with
+	applicability 'all'.
+	Reported by Ryan Schmidt <ryandesign@macports.org>.
+
+2010-06-03  Bruno Haible  <bruno@clisp.org>
+
+	* README: Remove lots of old cruft. Mention the translators as the
+	third audience.
+
+2010-06-03  Bruno Haible  <bruno@clisp.org>
+
+	* version.sh: Bump to 0.18.1.
+	* autogen.sh: Record the gnulib version that is being used.
+
+2010-06-03  Bruno Haible  <bruno@clisp.org>
+
+	Deprecate the --with-cvs option.
+	* DEPENDENCIES: Update entries for git, CVS. Remove entry for RCS.
+	* PACKAGING: Update comments about archive.*.tar.gz.
+
+2010-05-19  Bruno Haible  <bruno@clisp.org>
+
+	Link with libunistring, if it exists.
+	* autogen.sh (GNULIB_MODULES_TOOLS_FOR_SRC,
+	GNULIB_MODULES_LIBGETTEXTPO): Add libunistring-optional.
+	* DEPENDENCIES: Mention optional dependency to GNU libunistring.
+
+2010-05-22  Bruno Haible  <bruno@clisp.org>
+
+	* README.woe32: Explain how to build 64-bit mode binaries.
+	Reported by Rob <sisyphus1@optusnet.com.au>.
+
+2010-05-24  Bruno Haible  <bruno@clisp.org>
+
+	Use the newest regex module from gnulib.
+	* autogen.sh: Add another gnulib-tool invocation for libgrep.
+	(GNULIB_MODULES_TOOLS_FOR_SRC_COMMON_DEPENDENCIES): New variable.
+	(GNULIB_MODULES_TOOLS_FOR_LIBGREP): Change value.
+	Pass option -I libgrep/gnulib-m4 to 'aclocal'.
+	* Makefile.am (distcheck-hook): Don't compare memchr.c.
+
+2010-05-23  Bruno Haible  <bruno@clisp.org>
+
+	Do regex matching purely with regex, not regex + dfa + kwset.
+	* autogen.sh (GNULIB_MODULES_TOOLS_FOR_LIBGREP): Remove hard-locale.
+
+2010-05-15  Bruno Haible  <bruno@clisp.org>
+
+	List the build dependencies.
+	* DEPENDENCIES: Clarify that 'git' is also a build dependencies.
+	List the non-trivial build dependencies.
+	Reported by Santiago Vila <sanvila@unex.es>.
+
+2010-05-09  Bruno Haible  <bruno@clisp.org>
+
+	* gettext-0.18 released.
+
+2010-05-09  Bruno Haible  <bruno@clisp.org>
+
+	* version.sh: Bump to 0.18.
+	* windows/gettext.rc: Update year.
+	* autogen.sh: Record the gnulib version that is being used.
+
+2010-05-08  Bruno Haible  <bruno@clisp.org>
+
+	* NEWS: Mention the PO mode changes.
+
+2010-04-02  Bruno Haible  <bruno@clisp.org>
+
+	Remove autoconf-lib-link directory, obsoleted by gnulib.
+	* Makefile.am (SUBDIRS): Remove autoconf-lib-link.
+	($(srcdir)/configure): Don't depend on autoconf-lib-link/configure.ac.
+	(distcheck-hook): Remove checks of lib-*.m4 and config.rpath.
+	* autogen.sh (GNULIB_MODULES_RUNTIME_FOR_SRC): Add havelib.
+	Remove configuration of autoconf-lib-link subdirectory. Remove
+	"-I ../autoconf-lib-link/m4" option to aclocal. Don't copy
+	config.rpath.
+	* configure.ac (AC_CONFIG_SUBDIRS): Remove autoconf-lib-link.
+	Don't recurse into autoconf-lib-link.
+
 2010-03-30  Bruno Haible  <bruno@clisp.org>
 
 	* README.woe32: Update for Cygwin 1.7.x.

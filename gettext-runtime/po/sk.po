@@ -1,14 +1,15 @@
 # Slovak translations for GNU gettext-runtime package.
-# Copyright (C) 1999, 2001, 2002, 2003, 2004, 2007, 2008 Free Software Foundation, Inc.
+# Copyright (C) 1999, 2001, 2002, 2003, 2004, 2007, 2008, 2010 Free Software Foundation, Inc.
+# This file is distributed under the same license as the gettext package.
 # Štefan Ondrejička <ondrej@idata.sk>, 1999.
-# Marcel Telka <marcel@telka.sk>, 2001, 2002, 2003, 2004, 2007, 2008.
+# Marcel Telka <marcel@telka.sk>, 2001, 2002, 2003, 2004, 2007, 2008, 2010.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: GNU gettext-runtime 0.16.2-pre5\n"
+"Project-Id-Version: GNU gettext-runtime 0.18\n"
 "Report-Msgid-Bugs-To: bug-gnu-gettext@gnu.org\n"
-"POT-Creation-Date: 2007-12-24 15:36+0100\n"
-"PO-Revision-Date: 2008-02-21 00:12+0100\n"
+"POT-Creation-Date: 2010-06-04 01:57+0200\n"
+"PO-Revision-Date: 2010-05-10 14:03+0200\n"
 "Last-Translator: Marcel Telka <marcel@telka.sk>\n"
 "Language-Team: Slovak <sk-i18n@lists.linux.sk>\n"
 "Language: sk\n"
@@ -21,66 +22,65 @@ msgstr ""
 msgid "write error"
 msgstr "chyba zápisu"
 
-#: gnulib-lib/error.c:125
+#: gnulib-lib/error.c:181
 msgid "Unknown system error"
 msgstr "Neznáma systémová chyba"
 
-#: gnulib-lib/getopt.c:530 gnulib-lib/getopt.c:546
+#: gnulib-lib/getopt.c:527 gnulib-lib/getopt.c:543
 #, c-format
-msgid "%s: option `%s' is ambiguous\n"
-msgstr "%s: voľba `%s' nie je jednoznačná\n"
+msgid "%s: option '%s' is ambiguous\n"
+msgstr "%s: voľba '%s' nie je jednoznačná\n"
 
-#: gnulib-lib/getopt.c:579 gnulib-lib/getopt.c:583
+#: gnulib-lib/getopt.c:576 gnulib-lib/getopt.c:580
 #, c-format
-msgid "%s: option `--%s' doesn't allow an argument\n"
-msgstr "%s: voľba `--%s' nepovoľuje parameter\n"
+msgid "%s: option '--%s' doesn't allow an argument\n"
+msgstr "%s: voľba '--%s' nepovoľuje parameter\n"
 
-#: gnulib-lib/getopt.c:592 gnulib-lib/getopt.c:597
+#: gnulib-lib/getopt.c:589 gnulib-lib/getopt.c:594
 #, c-format
-msgid "%s: option `%c%s' doesn't allow an argument\n"
-msgstr "%s: voľba `%c%s' nepovoľuje parameter\n"
+msgid "%s: option '%c%s' doesn't allow an argument\n"
+msgstr "%s: voľba '%c%s' nepovoľuje parameter\n"
 
-#: gnulib-lib/getopt.c:640 gnulib-lib/getopt.c:659 gnulib-lib/getopt.c:975
-#: gnulib-lib/getopt.c:994
+#: gnulib-lib/getopt.c:637 gnulib-lib/getopt.c:656
 #, c-format
-msgid "%s: option `%s' requires an argument\n"
-msgstr "%s: voľba `%s' vyžaduje parameter\n"
+msgid "%s: option '--%s' requires an argument\n"
+msgstr "%s: voľba '--%s' vyžaduje parameter\n"
 
-#: gnulib-lib/getopt.c:697 gnulib-lib/getopt.c:700
+#: gnulib-lib/getopt.c:694 gnulib-lib/getopt.c:697
 #, c-format
-msgid "%s: unrecognized option `--%s'\n"
-msgstr "%s: neznáma voľba `--%s'\n"
+msgid "%s: unrecognized option '--%s'\n"
+msgstr "%s: neznáma voľba '--%s'\n"
 
-#: gnulib-lib/getopt.c:708 gnulib-lib/getopt.c:711
+#: gnulib-lib/getopt.c:705 gnulib-lib/getopt.c:708
 #, c-format
-msgid "%s: unrecognized option `%c%s'\n"
-msgstr "%s: neznáma voľba `%c%s'\n"
+msgid "%s: unrecognized option '%c%s'\n"
+msgstr "%s: neznáma voľba '%c%s'\n"
 
-#: gnulib-lib/getopt.c:763 gnulib-lib/getopt.c:766
+#: gnulib-lib/getopt.c:757 gnulib-lib/getopt.c:760
 #, c-format
-msgid "%s: illegal option -- %c\n"
-msgstr "%s: neprípustná voľba -- %c\n"
+msgid "%s: invalid option -- '%c'\n"
+msgstr "%s: neplatná voľba -- '%c'\n"
 
-#: gnulib-lib/getopt.c:772 gnulib-lib/getopt.c:775
+#: gnulib-lib/getopt.c:810 gnulib-lib/getopt.c:827 gnulib-lib/getopt.c:1035
+#: gnulib-lib/getopt.c:1053
 #, c-format
-msgid "%s: invalid option -- %c\n"
-msgstr "%s: neplatná voľba -- %c\n"
+msgid "%s: option requires an argument -- '%c'\n"
+msgstr "%s: voľba vyžaduje parameter -- '%c'\n"
 
-#: gnulib-lib/getopt.c:827 gnulib-lib/getopt.c:843 gnulib-lib/getopt.c:1047
-#: gnulib-lib/getopt.c:1065
+#: gnulib-lib/getopt.c:883 gnulib-lib/getopt.c:899
 #, c-format
-msgid "%s: option requires an argument -- %c\n"
-msgstr "%s: voľba vyžaduje parameter -- %c\n"
+msgid "%s: option '-W %s' is ambiguous\n"
+msgstr "%s: voľba '-W %s' nie je jednoznačná\n"
 
-#: gnulib-lib/getopt.c:896 gnulib-lib/getopt.c:912
+#: gnulib-lib/getopt.c:923 gnulib-lib/getopt.c:941
 #, c-format
-msgid "%s: option `-W %s' is ambiguous\n"
-msgstr "%s: voľba `-W %s' nie je jednoznačná\n"
+msgid "%s: option '-W %s' doesn't allow an argument\n"
+msgstr "%s: voľba '-W %s' nepovoľuje parameter\n"
 
-#: gnulib-lib/getopt.c:936 gnulib-lib/getopt.c:954
+#: gnulib-lib/getopt.c:962 gnulib-lib/getopt.c:980
 #, c-format
-msgid "%s: option `-W %s' doesn't allow an argument\n"
-msgstr "%s: voľba `-W %s' nedovoľuje použitie parametra\n"
+msgid "%s: option '-W %s' requires an argument\n"
+msgstr "%s: voľba '-W %s' vyžaduje parameter\n"
 
 #: gnulib-lib/xmalloc.c:37
 #, c-format

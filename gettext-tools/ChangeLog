@@ -1,3 +1,49 @@
+2010-06-06  Bruno Haible  <bruno@clisp.org>
+
+	* configure.ac (ARCHIVE_FORMAT): If neither --with-git nor --with-cvs
+	is specified, don't use the git format if the 'git' program if older
+	than version 1.6.
+	Suggested by Karl Berry <karl@freefriends.org>.
+
+2010-06-04  Bruno Haible  <bruno@clisp.org>
+
+	* gettext-0.18.1 released.
+
+2010-06-04  Bruno Haible  <bruno@clisp.org>
+
+	* configure.ac (ARCHIVE_FORMAT): If neither --with-git nor --with-cvs
+	is specified, use the git format only if the 'git' program exists.
+
+2010-06-03  Bruno Haible  <bruno@clisp.org>
+
+	Deprecate the --with-cvs option.
+	* configure.ac: Document options --without-git, --with-cvs.
+	(ARCHIVE_FORMAT): Use cvs only when explicitly asked for.
+
+2010-05-24  Bruno Haible  <bruno@clisp.org>
+
+	Use the newest regex module from gnulib.
+	* configure.ac: Invoke grgl_EARLY and grgl_INIT. Don't invoke
+	gt_LIBGREP.
+	* Makefile.am (ACLOCAL_AMFLAGS): Add -I libgrep/gnulib-m4.
+
+2010-05-09  Bruno Haible  <bruno@clisp.org>
+
+	* gettext-0.18 released.
+
+2010-05-09  Bruno Haible  <bruno@clisp.org>
+
+	Export rpl_optind, rpl_optarg from DLL depending on platform.
+	* configure.ac (GETTEXTLIB_EXPORTS_FLAGS): New substituted variable.
+	* woe32dll/gettextlib-exports.c (rpl_optarg, rpl_optind): Export only
+	if GNULIB_DEFINED_GETOPT is set.
+
+2010-04-02  Bruno Haible  <bruno@clisp.org>
+
+	* Makefile.am (ACLOCAL_AMFLAGS): Remove "-I ../autoconf-lib-link/m4"
+	option.
+	(gettextsrc_SCRIPTS): Update.
+
 2009-12-26  Bruno Haible  <bruno@clisp.org>
 
 	* configure.ac: Don't define USE_IN_GETTEXT_TESTS. Test for uselocale.

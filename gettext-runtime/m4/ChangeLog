@@ -1,3 +1,41 @@
+2010-06-04  Bruno Haible  <bruno@clisp.org>
+
+	* gettext-0.18.1 released.
+
+2010-06-03  Bruno Haible  <bruno@clisp.org>
+
+	Choose among AC_DEFUN_ONCE, AC_DEFUN in a way that aclocal understands.
+	* iconv.m4 (gl_iconv_AC_DEFUN): New macro.
+	(AM_ICONV): Define it through gl_iconv_AC_DEFUN.
+	Reported by Ludovic Courtès <ludo@gnu.org>.
+
+2010-05-16  Bruno Haible  <bruno@clisp.org>
+
+	Avoid autoconf warnings about AM_ICONV.
+	* iconv.m4 (AM_ICONV): Define using AC_DEFUN_ONCE for autoconf >= 2.64.
+
+2010-05-09  Bruno Haible  <bruno@clisp.org>
+
+	* gettext-0.18 released.
+
+2010-05-09  Bruno Haible  <bruno@clisp.org>
+
+	* po.m4 (AM_PO_SUBDIRS): Set GETTEXT_MACRO_VERSION to 0.18.
+
+2010-04-20  Simon Josefsson  <simon@josefsson.org>
+            Bruno Haible  <bruno@clisp.org>
+
+	visibility: Don't use -fvisibility if it leads to a warning.
+	* visibility.m4 (gl_VISIBILITY): Check whether -Werror is usable. If
+	yes, don't pretend that visibility works if it leads to a warning.
+	Reported by Mike Gran <spk121@yahoo.com>.
+
+2010-04-05  Bruno Haible  <bruno@clisp.org>
+
+	Make the multithread modules work on Cygwin 1.7.2.
+	* threadlib.m4 (gl_THREADLIB_BODY): Improve the test whether imported
+	symbols can be declared weak, so that it returns "no" on Cygwin 1.7.2.
+
 2010-03-28  Bruno Haible  <bruno@clisp.org>
 
 	* gettext.m4 (AM_GNU_GETTEXT): Emit a warning if the first argument is

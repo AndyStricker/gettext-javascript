@@ -4,7 +4,7 @@
 # also regenerates all aclocal.m4, config.h.in, Makefile.in, configure files
 # with new versions of autoconf or automake.
 #
-# This script requires autoconf-2.60..2.64 and automake-1.11 in the PATH.
+# This script requires autoconf-2.60..2.65 and automake-1.11.1 in the PATH.
 # It also requires either
 #   - the GNULIB_TOOL environment variable pointing to the gnulib-tool script
 #     in a gnulib checkout, or
@@ -16,7 +16,7 @@
 #   - the makeinfo program from the texinfo package,
 #   - perl.
 
-# Copyright (C) 2003-2009 Free Software Foundation, Inc.
+# Copyright (C) 2003-2010 Free Software Foundation, Inc.
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -36,8 +36,8 @@
 # Usage after a first-time git clone / cvs checkout:   ./autogen.sh
 # Usage after a git clone / cvs update:                ./autogen.sh --quick
 # This uses an up-to-date gnulib checkout.
-# (The gettext-0.17 release was prepared using gnulib commit
-# bf5ebbca03613397b66521e98dd4ce28741c4689 from 2007-11-07.)
+# (The gettext-0.18.1 release was prepared using gnulib commit
+# 74d509383fe30bb5511a978b52e4f8ecae37826b from 2010-06-03.)
 #
 # Usage from a released tarball:             ./autogen.sh --quick --skip-gnulib
 # This does not use a gnulib checkout.
@@ -83,6 +83,7 @@ if ! $skip_gnulib; then
       error
       getopt-gnu
       gettext-h
+      havelib
       memmove
       progname
       propername
@@ -157,6 +158,7 @@ if ! $skip_gnulib; then
       iconv
       javacomp
       javaexec
+      libunistring-optional
       localcharset
       locale
       localename
@@ -212,16 +214,30 @@ if ! $skip_gnulib; then
       xstriconveh
       xvasprintf
     '
-    # Not yet used. Add some files to gettext-tools-misc instead.
-    GNULIB_MODULES_TOOLS_FOR_LIBGREP='
-      error
-      exitfail
+    # Common dependencies of GNULIB_MODULES_TOOLS_FOR_SRC and GNULIB_MODULES_TOOLS_FOR_LIBGREP.
+    GNULIB_MODULES_TOOLS_FOR_SRC_COMMON_DEPENDENCIES='
+      alloca-opt
+      arg-nonnull
+      c++defs
+      extensions
       gettext-h
-      hard-locale
-      obstack
-      regex
+      include_next
+      localcharset
+      malloc-posix
+      mbrtowc
+      mbsinit
+      multiarch
+      ssize_t
       stdbool
-      xalloc
+      stddef
+      stdint
+      stdlib
+      streq
+      unistd
+      verify
+      warn-on-use
+      wchar
+      wctype
     '
     GNULIB_MODULES_TOOLS_OTHER='
       gettext-tools-misc
@@ -234,7 +250,16 @@ if ! $skip_gnulib; then
       stdint
     '
     $GNULIB_TOOL --dir=gettext-tools --lib=libgettextlib --source-base=gnulib-lib --m4-base=gnulib-m4 --tests-base=gnulib-tests --makefile-name=Makefile.gnulib --libtool --with-tests --local-dir=gnulib-local --local-symlink \
-      --import --avoid=hash-tests $GNULIB_MODULES_TOOLS_FOR_SRC $GNULIB_MODULES_TOOLS_OTHER
+      --import --avoid=hash-tests $GNULIB_MODULES_TOOLS_FOR_SRC $GNULIB_MODULES_TOOLS_FOR_SRC_COMMON_DEPENDENCIES $GNULIB_MODULES_TOOLS_OTHER
+    # In gettext-tools/libgrep:
+    if test -f gettext-tools/libgrep/gnulib-m4/gnulib-cache.m4; then
+      mv -f gettext-tools/libgrep/gnulib-m4/gnulib-cache.m4 gettext-tools/libgrep/gnulib-m4/gnulib-cache.m4~
+    fi
+    GNULIB_MODULES_TOOLS_FOR_LIBGREP='
+      regex
+    '
+    $GNULIB_TOOL --dir=gettext-tools --macro-prefix=grgl --lib=libgrep --source-base=libgrep --m4-base=libgrep/gnulib-m4 --makefile-name=Makefile.gnulib --local-dir=gnulib-local --local-symlink \
+      --import `for m in $GNULIB_MODULES_TOOLS_FOR_SRC_COMMON_DEPENDENCIES; do if test \`$GNULIB_TOOL --extract-applicability $m\` != all; then echo --avoid=$m; fi; done` $GNULIB_MODULES_TOOLS_FOR_LIBGREP
     # In gettext-tools/libgettextpo:
     if test -f gettext-tools/libgettextpo/gnulib-m4/gnulib-cache.m4; then
       mv -f gettext-tools/libgettextpo/gnulib-m4/gnulib-cache.m4 gettext-tools/libgettextpo/gnulib-m4/gnulib-cache.m4~
@@ -257,6 +282,7 @@ if ! $skip_gnulib; then
       gettext-h
       hash
       iconv
+      libunistring-optional
       minmax
       open
       ostream
@@ -301,16 +327,6 @@ else
   done
 fi
 
-(cd autoconf-lib-link
- ../build-aux/fixaclocal aclocal -I m4 -I ../m4
- autoconf
- automake --add-missing --copy
- # Rebuilding the autoconfiguration of the tests is only rarely needed.
- if ! $quick; then
-   ./configure && make subconfigures && make distclean
- fi
-)
-
 (cd gettext-runtime/libasprintf
  ../../build-aux/fixaclocal aclocal -I ../../m4 -I ../m4 -I gnulib-m4
  autoconf
@@ -319,7 +335,7 @@ fi
 )
 
 (cd gettext-runtime
- ../build-aux/fixaclocal aclocal -I m4 -I ../autoconf-lib-link/m4 -I ../m4 -I gnulib-m4
+ ../build-aux/fixaclocal aclocal -I m4 -I ../m4 -I gnulib-m4
  autoconf
  autoheader && touch config.h.in
  automake --add-missing --copy
@@ -346,7 +362,7 @@ cp -p gettext-runtime/ABOUT-NLS gettext-tools/ABOUT-NLS
 )
 
 (cd gettext-tools
- ../build-aux/fixaclocal aclocal -I m4 -I ../gettext-runtime/m4 -I ../autoconf-lib-link/m4 -I ../m4 -I gnulib-m4 -I libgettextpo/gnulib-m4
+ ../build-aux/fixaclocal aclocal -I m4 -I ../gettext-runtime/m4 -I ../m4 -I gnulib-m4 -I libgrep/gnulib-m4 -I libgettextpo/gnulib-m4
  autoconf
  autoheader && touch config.h.in
  test -d intl || mkdir intl
@@ -366,5 +382,3 @@ cp -p gettext-runtime/ABOUT-NLS gettext-tools/ABOUT-NLS
 build-aux/fixaclocal aclocal -I m4
 autoconf
 automake
-
-cp -p autoconf-lib-link/config.rpath build-aux/config.rpath

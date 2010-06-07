@@ -1,5 +1,5 @@
 ## Makefile for the gettext-tools/src subdirectory of GNU gettext
-## Copyright (C) 1995-1998, 2000-2009 Free Software Foundation, Inc.
+## Copyright (C) 1995-1998, 2000-2010 Free Software Foundation, Inc.
 ##
 ## This program is free software: you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -70,6 +70,7 @@ AM_CPPFLAGS = \
 DEFS = \
   -DLOCALEDIR=\"$(localedir)\" -DBISON_LOCALEDIR=\"$(BISON_LOCALEDIR)\" \
   -DLOCALE_ALIAS_PATH=\"$(aliaspath)\" \
+  -DUSEJAVA=$(USEJAVA) \
   -DUSEJEXE=$(USEJEXE) \
   -DGETTEXTJEXEDIR=\"$(pkglibdir)\" \
   -DGETTEXTJAR=\"$(jardir)/gettext.jar\" \
@@ -78,7 +79,9 @@ DEFS = \
   -DPROJECTSDIR=\"$(projectsdir)\" @DEFS@
 # Ensure that <stdint.h> defines SIZE_MAX in C++ mode, like it does in C mode.
 AM_CXXFLAGS = -D__STDC_LIMIT_MACROS
-LDADD = ../gnulib-lib/libgettextlib.la @LTLIBINTL@ $(WOE32_LDADD)
+
+LDADD = ../gnulib-lib/libgettextlib.la $(LTLIBUNISTRING) @LTLIBINTL@ $(WOE32_LDADD)
+OTHERPROGDEPENDENCIES = ../gnulib-lib/libgettextlib.la $(WOE32_LDADD)
 
 SED = sed
 YACC = @YACC@ -d
@@ -209,12 +212,15 @@ urlget_SOURCES = urlget.c
 
 # How to build libgettextsrc.la.
 # Need ../gnulib-lib/libgettextlib.la.
+# Need $(LTLIBUNISTRING) because ulc_width_linebreaks, uc_width, etc. may be
+# taken from libunistring, when the configure option --with-libunistring-prefix
+# was given.
 # Need @LTLIBINTL@ because many source files use gettext().
 # Need @LTLIBICONV@ because po-charset.c, po-lex.c, msgl-iconv.c, write-po.c
 # use iconv().
 libgettextsrc_la_LDFLAGS = \
   -release @VERSION@ \
-  ../gnulib-lib/libgettextlib.la @LTLIBINTL@ @LTLIBICONV@ -lc @LTNOUNDEF@
+  ../gnulib-lib/libgettextlib.la $(LTLIBUNISTRING) @LTLIBINTL@ @LTLIBICONV@ -lc @LTNOUNDEF@
 
 # Tell the mingw or Cygwin linker which symbols to export.
 if WOE32DLL
@@ -253,7 +259,6 @@ msgfilter_LDADD = libgettextsrc.la @INTL_MACOSX_LIBS@ $(WOE32_LDADD)
 msggrep_LDADD = $(LIBGREP) libgettextsrc.la @INTL_MACOSX_LIBS@ $(WOE32_LDADD)
 msginit_LDADD = libgettextsrc.la @INTL_MACOSX_LIBS@ $(WOE32_LDADD)
 msguniq_LDADD = libgettextsrc.la @INTL_MACOSX_LIBS@ $(WOE32_LDADD)
-recode_sr_latin_LDADD = ../gnulib-lib/libgettextlib.la @INTL_MACOSX_LIBS@ $(WOE32_LDADD)
 
 # Specify when to relink the programs.
 msgcmp_DEPENDENCIES = libgettextsrc.la ../gnulib-lib/libgettextlib.la $(WOE32_LDADD)
@@ -271,7 +276,9 @@ msgfilter_DEPENDENCIES = libgettextsrc.la ../gnulib-lib/libgettextlib.la $(WOE32
 msggrep_DEPENDENCIES = $(LIBGREP) libgettextsrc.la ../gnulib-lib/libgettextlib.la $(WOE32_LDADD)
 msginit_DEPENDENCIES = libgettextsrc.la ../gnulib-lib/libgettextlib.la $(WOE32_LDADD)
 msguniq_DEPENDENCIES = libgettextsrc.la ../gnulib-lib/libgettextlib.la $(WOE32_LDADD)
-recode_sr_latin_DEPENDENCIES = ../gnulib-lib/libgettextlib.la $(WOE32_LDADD)
+recode_sr_latin_DEPENDENCIES = $(OTHERPROGDEPENDENCIES)
+hostname_DEPENDENCIES = $(OTHERPROGDEPENDENCIES)
+urlget_DEPENDENCIES = $(OTHERPROGDEPENDENCIES)
 
 # Specify installation directory, for --enable-relocatable.
 msgcmp_CPPFLAGS = $(AM_CPPFLAGS) -DINSTALLDIR=\"$(bindir)\"
@@ -439,6 +446,12 @@ DISTCLEANFILES += user-email
 
 
 # Special rules for Java compilation.
+
+USEJAVA = $(USEJAVA_@BUILDJAVAEXE@)
+USEJAVA_yes = 1
+USEJAVA_no = $(USEJAVA_no_@BUILDJAVA@)
+USEJAVA_no_yes = 1
+USEJAVA_no_no = 0
 
 USEJEXE = $(USEJEXE_@BUILDJAVAEXE@)
 USEJEXE_yes = 1

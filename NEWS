@@ -1,4 +1,19 @@
-Version 0.18 - January 2008
+Version 0.18.1 - June 2010
+
+* msggrep: A '$' anchor in a regular expression now also matches the end of
+  the string, even if it does not end in a newline.
+
+* Dependencies:
+  The libraries and programs are now linked with libunistring if this library
+  is already installed.
+
+* Installation options:
+  The configure option --with-cvs is deprecated. The 'autopoint' program will
+  now use the 'git' program by default to compress its archive. If the
+  configure option --without-git is specified, 'autopoint' will not rely on
+  'git', but will instead rely on a locally installed a 3 MB large archive.
+
+Version 0.18 - May 2010
 
 * Runtime behaviour:
   - On MacOS X and Windows systems, <libintl.h> now extends setlocale() and
@@ -49,6 +64,11 @@ Version 0.18 - January 2008
 
 * autopoint can now be used to update several PO directories all together.
 
+* PO mode changes:
+  - PO files with plural entries are now correctly handled.
+  - Editing a message with previous msgid (in comments) removes these
+    comments.  Contributed by Noritada Kobayashi.
+
 * The po/Makevars file has a new field MSGMERGE_OPTIONS, that can be used
   to adjust msgmerge's operation.
 
@@ -69,7 +89,9 @@ Version 0.18 - January 2008
   locally installed a 3 MB large archive.
 
 * Portability:
-  The msgfilter program now also works on native Woe32 platforms.
+  - The msgfilter program now also works on native Woe32 platforms.
+  - Compiled C# message catalogs now also work with 'mono' versions from 2009
+    or newer.
 
 Version 0.17 - November 2007
 

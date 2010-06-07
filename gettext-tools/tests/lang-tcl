@@ -8,6 +8,9 @@
 # but not in the fr_FR.UTF-8 locale. Probably because in the fr_FR locale,
 # nl_langinfo(CODESET) returns "".
 
+# Note: This test fails on Cygwin 1.7.2 in the fr_FR.UTF-8 locale but not
+# in the fr_FR.ISO-8859-1 locale.
+
 tmpfiles=""
 trap 'rm -fr $tmpfiles' 1 2 3 15
 
@@ -100,11 +103,13 @@ EOF
 : ${LOCALE_FR=fr_FR}
 : ${LOCALE_FR_UTF8=fr_FR.UTF-8}
 if test $LOCALE_FR != none; then
-  LANGUAGE= LANG=$LOCALE_FR LC_MESSAGES= LC_CTYPE= LC_ALL= tclsh program.tcl > prog.out || exit 1
+  LANGUAGE= LANG=$LOCALE_FR LC_MESSAGES= LC_CTYPE= LC_ALL= tclsh program.tcl > prog.tmp || exit 1
+  LC_ALL=C tr -d '\r' < prog.tmp > prog.out || exit 1
   ${DIFF} prog.ok prog.out || exit 1
 fi
 if test $LOCALE_FR_UTF8 != none; then
-  LANGUAGE= LANG=$LOCALE_FR_UTF8 LC_MESSAGES= LC_CTYPE= LC_ALL= tclsh program.tcl > prog.out || exit 1
+  LANGUAGE= LANG=$LOCALE_FR_UTF8 LC_MESSAGES= LC_CTYPE= LC_ALL= tclsh program.tcl > prog.tmp || exit 1
+  LC_ALL=C tr -d '\r' < prog.tmp > prog.out || exit 1
   ${DIFF} prog.oku prog.out || exit 1
 fi
 if test $LOCALE_FR = none && test $LOCALE_FR_UTF8 = none; then

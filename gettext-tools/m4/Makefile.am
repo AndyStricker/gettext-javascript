@@ -4,9 +4,9 @@
 
 aclocaldir = @aclocaldir@
 aclocal_DATA = \
-  ../../autoconf-lib-link/m4/lib-ld.m4 \
-  ../../autoconf-lib-link/m4/lib-link.m4 \
-  ../../autoconf-lib-link/m4/lib-prefix.m4 \
+  ../../gettext-runtime/gnulib-m4/lib-ld.m4 \
+  ../../gettext-runtime/gnulib-m4/lib-link.m4 \
+  ../../gettext-runtime/gnulib-m4/lib-prefix.m4 \
   ../../gettext-runtime/m4/codeset.m4 \
   ../../gettext-runtime/m4/fcntl-o.m4 \
   ../../gettext-runtime/m4/gettext.m4 \
@@ -48,7 +48,5 @@ examplesbuildaux_DATA = \
 EXTRA_DIST = README csharpexec-test.exe \
 exported.m4 \
 hostname.m4 \
-libgrep.m4 \
-regex.m4 \
 setlocale.m4 \
 siginfo.m4

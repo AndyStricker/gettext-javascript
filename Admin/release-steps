@@ -13,17 +13,17 @@ Tasks not to forget before release:
   Check that gnulib/lib/{localcharset.h,localcharset.c,config.charset}
   agrees with it, except for copyright header changes.
 
+- Update Origin version in
+    gettext-runtime/po/Makefile.in.in and
+    gettext-tools/po/Makefile.in.in
+  if these files have changed since the last release.
+
 - Update the version numbers in
     gettext-runtime/m4/po.m4
     gettext-runtime/po/Makefile.in.in
     gettext-tools/po/Makefile.in.in
     gettext-runtime/intl/libgnuintl.h.in
     gettext-tools/libgettextpo/gettext-po.h.in
-
-- Update Origin version in
-    gettext-runtime/po/Makefile.in.in and
-    gettext-tools/po/Makefile.in.in
-  if these files have changed since the last release.
 
 - Update -version-info arguments in gettext-runtime/intl/Makefile.in
   and in gettext-tools/libgettextpo/Makefile.am.
@@ -50,37 +50,56 @@ Tasks not to forget before release:
 
 - Update
     NEWS
-    autoconf-lib-link/NEWS
     gettext-runtime/libasprintf/NEWS
     gettext-runtime/NEWS
+
+- Iterate:
+    ./rerun-autogen
+    ./rerun-configure
+    make distcheck-hook
+    ./rerun-make
+    make distcheck
+    Test tarball on various platforms.
+    Put fixes into gettext and gnulib.
+    make distclean
+  until it builds and installs fine on the said platforms.
+
+- Commit all the files in gnulib.
+- Update the version number and commit identifier in autogen.sh.
 
 - Add an entry to all the ChangeLogs
   except gettext-tools/examples/hello-c++-kde/admin/ChangeLog.
 
 - "make"; "make dist"; "make distcheck"
-- Commit all the files in gnulib.
-- Update the version number and commit identifier in autogen.sh.
 - cd gettext-tools/misc
-  cp archive.tar.gz-<last-release-number> archive.tar.gz
-  add-to-archive /somewhere/gettext-0.xx.yy.tar.gz
-  Then update the case statement and the table in autopoint.in.
-- Swap the first 4 lines of gettext-tools/doc/gettext.info, working around
-  a bug in makeinfo-4.11.
+  cp archive.dir.tar.gz-<last-release-number> archive.dir.tar.gz
+  ./add-to-archive /somewhere/gettext-0.xx.yy.tar.gz
+  Then update the case statement in autopoint.in.
 - again: "make dist"
 
 * Upload to ftp-upload.gnu.org according to the procedure given by
   Bradley M. Kuhn on 2003-11-11.
+  http://www.gnu.org/prep/maintain/maintain.html#Automated-Upload-Procedure
 
 - Tag the repository, using a simple tag and optionally a branch tag.
+  git tag -m 'gettext 0.18 release' v0.18
+  git push --tags
+
+- Update the homepage on www.gnu.org:
+  - Bump the version number in gettext.html.
+  - Update FAQ.html from gettext-tools/doc/FAQ.html.
 
 - Regenerate the documentation for www.gnu.org:
-  - In the gettext-tools/doc/ directory, copy the
-    gendocs.sh and gendocs_template files and run
-      $ cp -p ../../gettext-runtime/doc/*.texi .
-      $ ./gendocs.sh gettext "GNU gettext"
-  - In the gettext-runtime/libasprintf/ directory, copy the
-    gendocs.sh and gendocs_template files and run
-      $ ./gendocs.sh autosprintf "GNU autosprintf"
-  Copy the resulting manual/ directories, commit them in CVS, and for every
-  removed HTML file (that corresponds to a deleted node) add a line to the
-  .symlinks file in the same directory.
+  - Run the update.sh script, or
+  - Do this:
+    - In the gettext-tools/doc/ directory, copy the
+      gendocs.sh and gendocs_template files and run
+        $ cp -p ../../gettext-runtime/doc/*.texi .
+        $ LC_ALL=C ./gendocs.sh --email bug-gnu-gettext gettext "GNU gettext"
+    - In the gettext-runtime/libasprintf/ directory, copy the
+      gendocs.sh and gendocs_template files and run
+        $ LC_ALL=C ./gendocs.sh --email bug-gnu-gettext autosprintf "GNU autosprintf"
+    Copy the resulting manual/ directories.
+  Commit the resulting manual/ directories in CVS, and for every removed HTML
+  file (that corresponds to a deleted node) add a line to the .symlinks file
+  in the same directory.
