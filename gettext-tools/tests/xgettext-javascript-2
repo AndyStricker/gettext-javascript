@@ -18,6 +18,9 @@ var s4 = /["a-b]/.match(_('RegExp test string #4'));
 var s5 = /[a-b']/.match(_('RegExp test string #5'));
 var s6 = /[a-b"]/.match(_('RegExp test string #6'));
 var c = 35 / 2 / 8 + _("RegExp test string #7").length / 32.0;
+var sizestr = Math.round(size/1024*factor)/factor+_("RegExp test string #8");
+var cssClassType = attr.type.replace(/^.*\//, _('RegExp test string #9')).replace(/\./g, '-');
+var lookup = lookuptable[idx]/factor+_("RegExp test string #10");
 EOF
 
 tmpfiles="$tmpfiles xg-js-2.err xg-js-2.tmp xg-js-2.pot"
@@ -67,6 +70,15 @@ msgid "RegExp test string #6"
 msgstr ""
 
 msgid "RegExp test string #7"
+msgstr ""
+
+msgid "RegExp test string #8"
+msgstr ""
+
+msgid "RegExp test string #9"
+msgstr ""
+
+msgid "RegExp test string #10"
 msgstr ""
 EOF
 

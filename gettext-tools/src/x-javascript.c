@@ -1245,7 +1245,7 @@ phase5_scan_regexp ()
     /* scan for end of RegExp literal ('/') */
     for (;;)
       {
-        c = phase3_getc ();
+        c = phase2_getc ();     /* must use phase2 as there can't be comments */
         if (c == '/')
           break;
         switch (c)
@@ -1266,7 +1266,7 @@ phase5_scan_regexp ()
 
           case '\\':
             {
-              int c2 = phase3_getc ();
+              int c2 = phase2_getc ();
               if (c2 == UEOF)
                 {
                   error_with_progname = false;
@@ -1283,14 +1283,14 @@ phase5_scan_regexp ()
           }
       }
     /* scan for modifier flags (ECMA-262 5th section 15.10.4.1) */
-    c = phase3_getc ();
+    c = phase2_getc ();
     if (c == 'g' || c == 'i' || c == 'm')
       {
         return;
       }
     else
       {
-        phase3_ungetc (c);
+        phase2_ungetc (c);
       }
 }
 
@@ -1467,7 +1467,9 @@ phase5_get (token_ty *tp)
           /* Either a division operator or the start of a RegExp literal.
            * If the '/' token is spotted after a symbol it's a division,
            * otherwise it's a regex */
-          if (last_token_type == token_type_symbol)
+          if (last_token_type == token_type_symbol ||
+              last_token_type == token_type_rparen ||
+              last_token_type == token_type_rbracket)
             {
               tp->operator = '/';
               tp->type = last_token_type = token_type_operator;
