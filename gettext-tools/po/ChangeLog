@@ -1,3 +1,31 @@
+2010-10-10  Bruno Haible  <bruno@clisp.org>
+
+	* bg.po: Update from Roumen Petrov <transl@roumenpetrov.info>.
+
+2010-08-23  Bruno Haible  <bruno@clisp.org>
+
+	* fi.po: Update from Jorma Karvonen <karvonen.jorma@gmail.com>.
+	* it.po: Update from Marco Colombo <m.colombo@ed.ac.uk>.
+
+2010-07-27  Bruno Haible  <bruno@clisp.org>
+
+	* fr.po: Update from Christophe Combelles <ccomb@free.fr>.
+
+2010-07-02  Bruno Haible  <bruno@clisp.org>
+
+	* zh_CN.po: Update from Ji ZhengYu <zhengyuji@gmail.com>.
+
+2010-06-12  Bruno Haible  <bruno@clisp.org>
+
+	* Makefile.in.in ($(DOMAIN).pot-update): When GNU find is available,
+	avoid grepping through monster files.
+	Reported by Jim Meyering <jim@meyering.net>.
+
+2010-06-04  Bruno Haible  <bruno@clisp.org>
+
+	Offer more choices in the Makevars template.
+	* Makevars.template (USE_MSGCTXT, MSGMERGE_OPTIONS): New variables.
+
 2010-06-04  Bruno Haible  <bruno@clisp.org>
 
 	* gettext-0.18.1 released.

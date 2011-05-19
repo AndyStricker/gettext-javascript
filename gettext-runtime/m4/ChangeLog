@@ -1,3 +1,103 @@
+2010-10-04  Bruno Haible  <bruno@clisp.org>
+
+	Make option --with-libpth-prefix work.
+	* threadlib.m4 (gl_THREADLIB_BODY): When testing whether pth works, use
+	$LIBPTH, not just -lpth.
+
+2010-09-22  Bruno Haible  <bruno@clisp.org>
+
+	* threadlib.m4 (gl_THREADLIB_EARLY_BODY): When gl_THREADLIB_DEFAULT_NO
+	is defined, change the default to 'no'.
+	Reported by Paul Eggert.
+
+2010-09-04  Bruno Haible  <bruno@clisp.org>
+
+	Set PATH_SEPARATOR the same way autoconf does.
+	* progtest.m4 (AM_PATH_PROG_WITH_TEST): Determine the value of
+	PATH_SEPARATOR the same way autoconf-generated configure scripts do.
+
+2010-08-28  Bruno Haible  <bruno@clisp.org>
+
+	Prefer using AC_DEFUN_ONCE over AC_DEFUN in projects with gnulib.
+	* iconv.m4 (gl_iconv_AC_DEFUN): Use AC_DEFUN_ONCE if gl_00GNULIB is
+	defined.
+	Suggested by Eric Blake.
+
+2010-07-31  Bruno Haible  <bruno@clisp.org>
+
+	Use new ansi-c++.m4 from gnulib.
+	* ansi-c++.m4: Remove file.
+	* Makefile.am (EXTRA_DIST): Remove it.
+	Reported at <https://savannah.gnu.org/bugs/?30607>.
+
+2010-07-31  Bruno Haible  <bruno@clisp.org>
+
+	iconv: Work around AIX 6.1..7.1 bug.
+	* iconv.m4 (AM_ICONV_LINK): Test against AIX 6.1, 7.1 bug. When
+	cross-compiling, guess no on all versions of AIX.
+	Reported by Rainer Tammer.
+
+2010-07-30  Bruno Haible  <bruno@clisp.org>
+
+	iconv: Update regarding AIX.
+	* iconv.m4 (AM_ICONV_LINK): When cross-compiling, guess yes on AIX 7.
+	Reported by Rainer Tammer.
+
+2010-07-19  Bruno Haible  <bruno@clisp.org>
+
+	Modernize AC_TRY_RUN invocations.
+	* iconv.m4 (AM_ICONV_LINK): Use AC_RUN_IFELSE instead of AC_TRY_RUN.
+	* intdiv0.m4 (gt_INTDIV0): Likewise.
+	* printf-posix.m4 (gt_PRINTF_POSIX): Likewise.
+	* threadlib.m4 (gl_THREADLIB_BODY): Likewise.
+
+2010-07-19  Bruno Haible  <bruno@clisp.org>
+
+	Modernize AC_TRY_LINK invocations.
+	* codeset.m4 (AM_LANGINFO_CODESET): Use AC_LINK_IFELSE instead of
+	AC_TRY_LINK.
+	* gettext.m4 (AM_GNU_GETTEXT): Likewise.
+	* iconv.m4 (AM_ICONV_LINK): Likewise.
+	* intl.m4 (gt_INTL_SUBDIR_CORE): Likewise.
+	* intlmacosx.m4 (gt_INTL_MACOSX): Likewise.
+	* lcmessage.m4 (gt_LC_MESSAGES): Likewise.
+	* threadlib.m4 (gl_THREADLIB_BODY): Likewise.
+
+2010-07-18  Bruno Haible  <bruno@clisp.org>
+
+	Modernize AC_TRY_COMPILE invocations.
+	* iconv.m4 (gl_iconv_AC_DEFUN): Use AC_COMPILE_IFELSE instead of
+	AC_TRY_COMPILE.
+	* intl.m4 (gt_CHECK_DECL): Likewise.
+	* intmax.m4 (gt_TYPE_INTMAX_T): Likewise.
+	* inttypes-pri.m4 (gt_INTTYPES_PRI): Likewise.
+	* inttypes_h.m4 (gl_AC_HEADER_INTTYPES_H): Likewise.
+	* lock.m4 (gl_LOCK): Likewise.
+	* size_max.m4 (gl_SIZE_MAX): Likewise.
+	* stdint_h.m4 (gl_AC_HEADER_STDINT_H): Likewise.
+	* visibility.m4 (gl_VISIBILITY): Likewise.
+	* wchar_t.m4 (gt_TYPE_WCHAR_T): Likewise.
+	* wint_t.m4 (gt_TYPE_WINT_T): Likewise.
+
+2010-07-01  Christian Weisgerber  <naddy@mips.inka.de>  (tiny change)
+
+	Use AC_GNU_SOURCE as a fallback for AC_USE_SYSTEM_EXTENSIONS.
+	* fcntl-o.m4 (gl_FCNTL_O_FLAGS): When AC_USE_SYSTEM_EXTENSIONS is
+	not present (i.e. with autoconf 2.59 and when using gettextize, not
+	gnulib), require AC_GNU_SOURCE instead.
+
+2010-06-22  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	Avoid double-quotes inside backquote inside double-quote.
+	* gettext-runtime/m4/po.m4 (AM_PO_SUBDIRS, AM_POSTPROCESS_PO_MAKEFILE):
+	Remove unneeded outermost double-quotes around backquote that contains
+	double-quoted strings. Avoids an idiom that nearly triggers a ksh bug.
+
+2010-06-04  Bruno Haible  <bruno@clisp.org>
+
+	Prefer documented low-level autoconf macro names.
+	* intl.m4 (gt_CHECK_DECL): Use m4_translit instead of translit.
+
 2010-06-04  Bruno Haible  <bruno@clisp.org>
 
 	* gettext-0.18.1 released.
