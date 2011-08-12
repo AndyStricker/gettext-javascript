@@ -478,7 +478,9 @@ format_check (void *msgid_descr, void *msgstr_descr, bool equality,
               }
         }
 
-      if (spec1->unnamed_arg_count + spec2->unnamed_arg_count > 0)
+      if (equality
+      ? spec1->unnamed_arg_count != spec2->unnamed_arg_count
+      : spec1->unnamed_arg_count < spec2->unnamed_arg_count)
         {
           unsigned int i;
 
