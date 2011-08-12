@@ -164,3 +164,9 @@
 /ostream.priv.h
 /ostream.vt.h
 
+/dosname.h
+/float.c
+/iconv.c
+/iconv_close.c
+/strerror-override.c
+/strerror-override.h

@@ -381,3 +381,20 @@
 /term_styled_ostream.priv.h
 /term_styled_ostream.vt.h
 
+/allocator.c
+/allocator.h
+/careadlinkat.c
+/careadlinkat.h
+/dosname.h
+/float.c
+/iconv.c
+/iconv_close.c
+/iswblank.c
+/mbsrtowcs-impl.h
+/read.c
+/setlocale.c
+/spawn-pipe.c
+/spawn-pipe.h
+/strerror-override.c
+/strerror-override.h
+/waitpid.c

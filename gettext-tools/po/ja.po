@@ -32,22 +32,22 @@ msgstr "%2$s に対する引数 %1$s が曖昧です"
 msgid "Valid arguments are:"
 msgstr "正しい引数:"
 
-#: gnulib-lib/clean-temp.c:335
+#: gnulib-lib/clean-temp.c:332
 #, c-format
 msgid "cannot find a temporary directory, try setting $TMPDIR"
 msgstr "一時ディレクトリを見付けられません. $TMPDIR を設定してみてください"
 
-#: gnulib-lib/clean-temp.c:349
+#: gnulib-lib/clean-temp.c:346
 #, c-format
 msgid "cannot create a temporary directory using template \"%s\""
 msgstr "テンプレート \"%s\" を使って一時ディレクトリを作ることができません"
 
-#: gnulib-lib/clean-temp.c:445
+#: gnulib-lib/clean-temp.c:442
 #, c-format
 msgid "cannot remove temporary file %s"
 msgstr "一時ファイル \"%s\" を削除できません"
 
-#: gnulib-lib/clean-temp.c:460
+#: gnulib-lib/clean-temp.c:457
 #, c-format
 msgid "cannot remove temporary directory %s"
 msgstr "一時ディレクトリ %s を削除できません"
@@ -316,7 +316,7 @@ msgstr "%s サブプロセス"
 msgid "%s subprocess got fatal signal %d"
 msgstr "%s サブプロセスが致命的なシグナル %d を受け取りました"
 
-#: src/format.c:148
+#: src/format.c:149
 #, c-format
 msgid "'%s' is not a valid %s format string, unlike '%s'. Reason: %s"
 msgstr "'%s' は正しい %s 形式の文字列ではなく, '%s' とは違います. 理由: %s"
@@ -749,7 +749,7 @@ msgstr "命令番号 %u の終端文字は 1 から 9 の間の数字ではありません."
 #: src/msgcomm.c:280 src/msgconv.c:235 src/msgen.c:231 src/msgexec.c:180
 #: src/msgfilter.c:273 src/msgfmt.c:366 src/msggrep.c:410 src/msginit.c:268
 #: src/msgmerge.c:344 src/msgunfmt.c:262 src/msguniq.c:259
-#: src/recode-sr-latin.c:110 src/urlget.c:143 src/xgettext.c:584
+#: src/recode-sr-latin.c:110 src/urlget.c:143 src/xgettext.c:589
 #, c-format, no-wrap
 msgid ""
 "Copyright (C) %s Free Software Foundation, Inc.\n"
@@ -770,7 +770,7 @@ msgstr ""
 #: src/msgcomm.c:286 src/msgconv.c:241 src/msgen.c:237 src/msgexec.c:186
 #: src/msgfilter.c:279 src/msgfmt.c:372 src/msggrep.c:416 src/msginit.c:274
 #: src/msgmerge.c:350 src/msgunfmt.c:268 src/msguniq.c:265 src/urlget.c:149
-#: src/xgettext.c:590
+#: src/xgettext.c:595
 #, c-format
 msgid "Written by %s.\n"
 msgstr "作者 %s.\n"
@@ -889,8 +889,8 @@ msgstr "最大 1つの入力ファイルが許されます"
 #: src/msgfmt.c:411 src/msgfmt.c:419 src/msgfmt.c:434 src/msgfmt.c:456
 #: src/msggrep.c:437 src/msggrep.c:441 src/msgmerge.c:375 src/msgmerge.c:396
 #: src/msgmerge.c:400 src/msgunfmt.c:299 src/msguniq.c:286 src/msguniq.c:290
-#: src/xgettext.c:600 src/xgettext.c:604 src/xgettext.c:611 src/xgettext.c:614
-#: src/xgettext.c:617
+#: src/xgettext.c:605 src/xgettext.c:609 src/xgettext.c:616 src/xgettext.c:619
+#: src/xgettext.c:622
 #, c-format
 msgid "%s and %s are mutually exclusive"
 msgstr "%s と %s は背反です"
@@ -1534,7 +1534,7 @@ msgstr "      --add-location          '#: filename:line' の行を保持 (標準)\n"
 msgid "      --strict                strict Uniforum output style\n"
 msgstr "      --strict                厳密な Uniforum 出力形式\n"
 
-#: src/msgen.c:248 src/msgfmt.c:383 src/xgettext.c:634
+#: src/msgen.c:248 src/msgfmt.c:383 src/xgettext.c:639
 #, c-format
 msgid "no input file given"
 msgstr "入力ファイルが指定されていません"
@@ -1695,7 +1695,7 @@ msgid "invalid endianness: %s"
 msgstr "無効なエンディアン: %s"
 
 #. This is a proper name. See the gettext manual, section Names.
-#: src/msgfmt.c:372 src/msgunfmt.c:268 src/xgettext.c:590
+#: src/msgfmt.c:372 src/msgunfmt.c:268 src/xgettext.c:595
 msgid "Ulrich Drepper"
 msgstr "Ulrich Drepper"
 
@@ -2577,8 +2577,8 @@ msgid ""
 "Cannot convert from \"%s\" to \"%s\". %s relies on iconv(), and iconv() does "
 "not support this conversion."
 msgstr ""
-"\"%s\" から \"%s\" に変換できません. %s は iconv() に依存していますが,iconv"
-"() はこの変換を実装していません."
+"\"%s\" から \"%s\" に変換できません. %s は iconv() に依存していますが,"
+"iconv() はこの変換を実装していません."
 
 #: src/msgl-iconv.c:335
 #, c-format
@@ -3590,12 +3590,12 @@ msgstr ""
 "%s:%lu: 警告: 文法 $\"...\" はセキュリティ上の理由で推奨されません. 代わりに "
 "eval_gettext を使ってください"
 
-#: src/xgettext.c:621
+#: src/xgettext.c:626
 #, c-format
 msgid "--join-existing cannot be used when output is written to stdout"
 msgstr "--join-existing は出力先が標準出力の場合には使えません"
 
-#: src/xgettext.c:626
+#: src/xgettext.c:631
 #, c-format
 msgid "xgettext cannot work without keywords to look for"
 msgstr "xgettext は検索するキーワードがなければ動きません"
@@ -3641,9 +3641,10 @@ msgid ""
 "                                (C, C++, ObjectiveC, PO, Shell, Python, "
 "Lisp,\n"
 "                                EmacsLisp, librep, Scheme, Smalltalk, Java,\n"
-"                                JavaProperties, C#, awk, YCP, Tcl, Perl, "
-"PHP,\n"
-"                                GCC-source, NXStringTable, RST, Glade)\n"
+"                                JavaProperties, JavaScript, C#, awk, YCP, "
+"Tcl,\n"
+"                                Perl, PHP, GCC-source, NXStringTable, RST,\n"
+"                                Glade)\n"
 msgstr ""
 "  -L, --language=NAME         指定された言語を認識\n"
 "                                (C, C++, ObjectiveC, PO, Shell, Python, "
