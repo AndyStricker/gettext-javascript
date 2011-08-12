@@ -245,6 +245,10 @@ For PHP: @code{_}, @code{gettext}, @code{dgettext:2}, @code{dcgettext:2},
 @item
 For Glade 1: @code{label}, @code{title}, @code{text}, @code{format},
 @code{copyright}, @code{comments}, @code{preview_text}, @code{tooltip}.
+
+@item
+For JavaScript: @code{_}, @code{gettext}, @code{dgettext:2}, @code{ngettext:1,2}, @code{dngettext:2,3},
+@code{pgettext:1c,2}, @code{dpgettext:2c,3}, @code{npgettext:1c,2,3}, @code{dnpgettext:2c,3,4}.
 @end itemize
 
 To disable the default keyword specifications, the option @samp{-k} or
