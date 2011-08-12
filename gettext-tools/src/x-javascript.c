@@ -112,6 +112,10 @@ init_keywords ()
       x_javascript_keyword ("ngettext:1,2");
       x_javascript_keyword ("ungettext:1,2");
       x_javascript_keyword ("dngettext:2,3");
+      x_javascript_keyword ("pgettext:1c,2");
+      x_javascript_keyword ("dpgettext:2c,3");
+      x_javascript_keyword ("npgettext:1c,2,3");
+      x_javascript_keyword ("dnpgettext:2c,3,4");
       x_javascript_keyword ("_");
       default_keywords = false;
     }
@@ -120,6 +124,8 @@ init_keywords ()
 void
 init_flag_table_javascript ()
 {
+  /* jQuery sprintf (https://github.com/azatoth/jquery-sprintf)
+   * A.K.A. Shameless plug */
   xgettext_record_flag ("gettext:1:pass-javascript-format");
   xgettext_record_flag ("ugettext:1:pass-javascript-format");
   xgettext_record_flag ("dgettext:2:pass-javascript-format");
@@ -130,6 +136,25 @@ init_flag_table_javascript ()
   xgettext_record_flag ("dngettext:2:pass-javascript-format");
   xgettext_record_flag ("dngettext:3:pass-javascript-format");
   xgettext_record_flag ("_:1:pass-javascript-format");
+  xgettext_record_flag ("pgettext:2:pass-javascript-format");
+  xgettext_record_flag ("dpgettext:3:pass-javascript-format");
+  xgettext_record_flag ("npgettext:2:pass-javascript-format");
+  xgettext_record_flag ("npgettext:3:pass-javascript-format");
+  xgettext_record_flag ("dnpgettext:3:pass-javascript-format");
+  xgettext_record_flag ("dnpgettext:4:pass-javascript-format");
+
+  xgettext_record_flag ("$.printf:1:javascript-format");
+  xgettext_record_flag ("$.vprintf:1:javascript-format");
+  xgettext_record_flag ("$.sprintf:1:javascript-format");
+  xgettext_record_flag ("$.vsprintf:1:javascript-format");
+
+  /* NOTE!
+   *
+   * There are many dirrerent string format libraries/plugins/snippets for javascript.
+   * While we can't support them all, we could hopefully find the major ones.
+   * jQuery sprintf above is a shameless plug from author himself :-P
+   * */
+
 }
 
 
