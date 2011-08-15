@@ -112,6 +112,10 @@ init_keywords ()
       x_javascript_keyword ("ngettext:1,2");
       x_javascript_keyword ("ungettext:1,2");
       x_javascript_keyword ("dngettext:2,3");
+      x_javascript_keyword ("pgettext:1c,2");
+      x_javascript_keyword ("dpgettext:2c,3");
+      x_javascript_keyword ("npgettext:1c,2,3");
+      x_javascript_keyword ("dnpgettext:2c,3,4");
       x_javascript_keyword ("_");
       default_keywords = false;
     }
@@ -120,6 +124,8 @@ init_keywords ()
 void
 init_flag_table_javascript ()
 {
+  /* jQuery sprintf (https://github.com/azatoth/jquery-sprintf)
+   * A.K.A. Shameless plug */
   xgettext_record_flag ("gettext:1:pass-javascript-format");
   xgettext_record_flag ("ugettext:1:pass-javascript-format");
   xgettext_record_flag ("dgettext:2:pass-javascript-format");
@@ -130,6 +136,25 @@ init_flag_table_javascript ()
   xgettext_record_flag ("dngettext:2:pass-javascript-format");
   xgettext_record_flag ("dngettext:3:pass-javascript-format");
   xgettext_record_flag ("_:1:pass-javascript-format");
+  xgettext_record_flag ("pgettext:2:pass-javascript-format");
+  xgettext_record_flag ("dpgettext:3:pass-javascript-format");
+  xgettext_record_flag ("npgettext:2:pass-javascript-format");
+  xgettext_record_flag ("npgettext:3:pass-javascript-format");
+  xgettext_record_flag ("dnpgettext:3:pass-javascript-format");
+  xgettext_record_flag ("dnpgettext:4:pass-javascript-format");
+
+  xgettext_record_flag ("$.printf:1:javascript-format");
+  xgettext_record_flag ("$.vprintf:1:javascript-format");
+  xgettext_record_flag ("$.sprintf:1:javascript-format");
+  xgettext_record_flag ("$.vsprintf:1:javascript-format");
+
+  /* NOTE!
+   *
+   * There are many dirrerent string format libraries/plugins/snippets for javascript.
+   * While we can't support them all, we could hopefully find the major ones.
+   * jQuery sprintf above is a shameless plug from author himself :-P
+   * */
+
 }
 
 
@@ -1237,6 +1262,7 @@ static token_ty phase5_pushback[2];
 static int phase5_pushback_length;
 
 static token_type_ty last_token_type = token_type_other;
+static char last_token_symbol[512];
 
 static void
 phase5_scan_regexp ()
@@ -1352,14 +1378,14 @@ phase5_get (token_ty *tp)
           /* FALLTHROUGH */
         case 'A': case 'B': case 'C': case 'D': case 'E': case 'F':
         case 'G': case 'H': case 'I': case 'J': case 'K': case 'L':
-        case 'M': case 'N': case 'O': case 'P': case 'Q':
-        case 'S': case 'T':           case 'V': case 'W': case 'X':
+        case 'M': case 'N': case 'O': case 'P': case 'Q': case 'R':
+        case 'S': case 'T': case 'U': case 'V': case 'W': case 'X':
         case 'Y': case 'Z':
         case '_':
         case 'a': case 'b': case 'c': case 'd': case 'e': case 'f':
         case 'g': case 'h': case 'i': case 'j': case 'k': case 'l':
-        case 'm': case 'n': case 'o': case 'p': case 'q':
-        case 's': case 't':           case 'v': case 'w': case 'x':
+        case 'm': case 'n': case 'o': case 'p': case 'q': case 'r':
+        case 's': case 't': case 'u': case 'v': case 'w': case 'x':
         case 'y': case 'z':
         case '0': case '1': case '2': case '3': case '4':
         case '5': case '6': case '7': case '8': case '9':
@@ -1409,6 +1435,7 @@ phase5_get (token_ty *tp)
               }
             buffer[bufpos] = '\0';
             tp->string = xstrdup (buffer);
+            strncpy(last_token_symbol, buffer, 512);
             tp->type = last_token_type = token_type_symbol;
             return;
           }
@@ -1466,8 +1493,12 @@ phase5_get (token_ty *tp)
         case '/':
           /* Either a division operator or the start of a RegExp literal.
            * If the '/' token is spotted after a symbol it's a division,
-           * otherwise it's a regex */
-          if (last_token_type == token_type_symbol ||
+           * otherwise it's a regex, unless the symbol is found after a
+           * return, as it is a regex then */
+          if ((
+              last_token_type == token_type_symbol &&
+              strcmp("return", last_token_symbol) != 0
+              ) ||
               last_token_type == token_type_rparen ||
               last_token_type == token_type_rbracket)
             {

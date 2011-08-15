@@ -15,7 +15,7 @@ var s3 = _('Concatenation #3 '
            '- String part added');
 var s4 = _('Concatenation #4 ' +
            '- String part added');
-var s5 = _("This" + " whole " 
+var s5 = _("This" + " whole "
           + "string" +
          ' should' + " be " + 'extracted');
 EOF

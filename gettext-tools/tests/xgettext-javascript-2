@@ -21,6 +21,11 @@ var c = 35 / 2 / 8 + _("RegExp test string #7").length / 32.0;
 var sizestr = Math.round(size/1024*factor)/factor+_("RegExp test string #8");
 var cssClassType = attr.type.replace(/^.*\//, _('RegExp test string #9')).replace(/\./g, '-');
 var lookup = lookuptable[idx]/factor+_("RegExp test string #10");
+
+function doit(a){
+	return /\./.match(a);
+}
+doit(_("RegExp test string #11"));
 EOF
 
 tmpfiles="$tmpfiles xg-js-2.err xg-js-2.tmp xg-js-2.pot"
@@ -79,6 +84,9 @@ msgid "RegExp test string #9"
 msgstr ""
 
 msgid "RegExp test string #10"
+msgstr ""
+
+msgid "RegExp test string #11"
 msgstr ""
 EOF
 
