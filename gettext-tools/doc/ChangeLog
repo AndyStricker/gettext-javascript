@@ -1,3 +1,35 @@
+2011-07-08  Bruno Haible  <bruno@clisp.org>
+
+	* gettext.texi (aclocal): Recommend the use of aclocal's --install
+	option.
+	Suggested by Stefano Lattarini <stefano.lattarini@gmail.com>.
+
+2011-06-03  Bruno Haible  <bruno@clisp.org>
+
+	Copyright: Use LGPL 2.1 instead of LGPL 2.0.
+	* gettext.texi (Discussions, Licenses): Write "GNU Lesser General
+	Public License".
+
+2011-05-13  Ben Elliston  <bje@gnu.org>
+
+	* gettext.texi (config.guess): Update wget commands.
+
+2011-04-13  Bruno Haible  <bruno@clisp.org>
+
+	* msgcat.texi: Fix description of --use-first.
+	* msgcomm.texi: Fix typo.
+	Reported by Matthijs Kooijman.
+
+2010-12-14  Bruno Haible  <bruno@clisp.org>
+
+	* xgettext.texi: Mention that -L also supports Shell.
+	Reported by Eric Blake <eblake@redhat.com>.
+
+2010-11-13  Bruno Haible  <bruno@clisp.org>
+
+	* gettext.texi (Plural forms): Add Belarusian.
+	Reported by Ihar Hrachyshka <ihar.hrachyshka@gmail.com>.
+
 2010-08-29  Bruno Haible  <bruno@clisp.org>
 
 	* gettext.texi (Using Compendia): Correct after 2007-09-09 change.

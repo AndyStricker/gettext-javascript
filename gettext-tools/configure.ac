@@ -1,5 +1,5 @@
 dnl Configuration for the gettext-tools directory of GNU gettext
-dnl Copyright (C) 1995-1999, 2000-2010 Free Software Foundation, Inc.
+dnl Copyright (C) 1995-1999, 2000-2011 Free Software Foundation, Inc.
 dnl
 dnl This program is free software: you can redistribute it and/or modify
 dnl it under the terms of the GNU General Public License as published by
@@ -96,14 +96,6 @@ LT_INIT([win32-dll])
 dnl Prepares the libtool configuration for handling of Windows resources, and
 dnl sets the RC variable to a program that compiles Windows resource files.
 LT_LANG([Windows Resource])
-
-case "$host_os" in
-  # On Cygwin, without -no-undefined, a warning is emitted and only a static
-  # library is built.
-  beos* | mingw* | cygwin*) LTNOUNDEF='-no-undefined' ;;
-  *) LTNOUNDEF='' ;;
-esac
-AC_SUBST([LTNOUNDEF])
 
 dnl On mingw and Cygwin, we can activate special Makefile rules which add
 dnl version information to the shared libraries and executables.
@@ -469,7 +461,7 @@ if test "${enable_libasprintf+set}" = set; then
 else
   TESTLIBASPRINTF=yes
 fi
-if test "$CXX" = ":"; then
+if test "$CXX" = no; then
   TESTLIBASPRINTF=no
 fi
 AC_SUBST([TESTLIBASPRINTF])

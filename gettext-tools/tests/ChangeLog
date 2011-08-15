@@ -1,3 +1,15 @@
+2011-06-02  Bruno Haible  <bruno@clisp.org>
+
+	* xgettext-python-1: Update expected result after linebreaking in
+	libunistring changed on 2011-01-09.
+
+2010-11-20  Bruno Haible  <bruno@clisp.org>
+
+	Port to uClibc.
+	* gettext-6-prg.c: Treat uClibc like a non-glibc platform.
+	* gettext-7-prg.c: Likewise.
+	* format-c-5-prg.c: Likewise.
+
 2010-08-31  Bruno Haible  <bruno@clisp.org>
 
 	Avoid test leftovers on MacOS X 10.5.

@@ -1,5 +1,5 @@
 /* Extracts strings from C source file to Uniforum style .po file.
-   Copyright (C) 1995-1998, 2000-2010 Free Software Foundation, Inc.
+   Copyright (C) 1995-1998, 2000-2011 Free Software Foundation, Inc.
    Written by Ulrich Drepper <drepper@gnu.ai.mit.edu>, April 1995.
 
    This program is free software: you can redistribute it and/or modify
@@ -687,7 +687,8 @@ xgettext cannot work without keywords to look for"));
       iconv_t cd;
 
       /* Avoid glibc-2.1 bug with EUC-KR.  */
-# if (__GLIBC__ - 0 == 2 && __GLIBC_MINOR__ - 0 <= 1) && !defined _LIBICONV_VERSION
+# if ((__GLIBC__ == 2 && __GLIBC_MINOR__ <= 1) && !defined __UCLIBC__) \
+     && !defined _LIBICONV_VERSION
       if (strcmp (xgettext_global_source_encoding, "EUC-KR") == 0)
         cd = (iconv_t)(-1);
       else
@@ -2944,7 +2945,7 @@ arglist_parser_done (struct arglist_parser *ap, int argnum)
                                      msgid_context,
                                      &best_cp->msgid_pos,
                                      NULL, best_cp->msgid_comment);
-            if (best_cp->msgid_plural != NULL)
+            if (mp != NULL && best_cp->msgid_plural != NULL)
               remember_a_message_plural (mp, best_cp->msgid_plural,
                                          msgid_plural_context,
                                          &best_cp->msgid_plural_pos,

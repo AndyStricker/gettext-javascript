@@ -1,3 +1,91 @@
+2011-06-06  Bruno Haible  <bruno@clisp.org>
+
+	Ensure mbstate_t gets defined in libasprintf.
+	* configure.ac: Invoke AC_TYPE_MBSTATE_T. Needed on HP-UX 11.31.
+
+2011-06-04  Bruno Haible  <bruno@clisp.org>
+
+	Ensure intmax_t gets defined in libasprintf.
+	* configure.ac: Invoke gl_AC_TYPE_INTMAX_T instead of gt_TYPE_INTMAX_T.
+
+2011-06-03  Bruno Haible  <bruno@clisp.org>
+
+	* Makefile.am (lib_asprintf_EXTRASOURCES): Add verify.h.
+
+2010-10-10  Paul Eggert  <eggert@cs.ucla.edu>
+
+	rewrite int foo[2*X-1] to verify(X) or to int foo[X?1:-1]
+	* vasnprintf.c: Include "verify.h".
+	(mp_limb_verify, mp_twolimb_verify, TCHAR_T_verify): Remove, replacing
+	with a verify call.
+
+2011-06-03  Bruno Haible  <bruno@clisp.org>
+
+	Copyright: Use LGPL 2.1 instead of LGPL 2.0.
+	* COPYING.LIB: Replace with text of LGPL 2.1.
+	* *.h, *.c, *.cc, Makefile.am: Update copyright header.
+
+2011-02-23  Bruno Haible  <bruno@clisp.org>
+
+	Fix misindentation of preprocessor directives.
+	* vasnprintf.c (decode_long_double): Reindent preprocessor directives.
+
+2011-02-04  Bruno Haible  <bruno@clisp.org>
+
+	vasnprintf: Reduce use of malloc for small format strings.
+	* printf-args.h (N_DIRECT_ALLOC_ARGUMENTS): New macro.
+	(arguments): Add room for the first 7 arguments.
+	* printf-parse.h (N_DIRECT_ALLOC_DIRECTIVES): New macro.
+	(char_directives, u8_directives, u16_directives, u32_directives): Add
+	room for the first 7 directives.
+	* printf-parse.c: Include <string.h>.
+	(PRINTF_PARSE): Change memory handling code so that it uses the first
+	7 preallocated elements in an 'arguments' or 'DIRECTIVES' struct.
+	* vasnprintf.c (VASNPRINTF): Update memory handling code.
+	Reported by Pádraig Brady <P@draigbrady.com>.
+
+2010-11-20  Bruno Haible  <bruno@clisp.org>
+
+	Ensure that <features.h> is included before __GLIBC__ is tested.
+	* printf-parse.h: Include <features.h>.
+	* configure.ac: Test for <features.h>.
+	Reported by Mike Frysinger <vapier@gentoo.org>.
+
+2010-11-20  Bruno Haible  <bruno@clisp.org>
+
+	Port to uClibc.
+	* printf-parse.h (FLAG_LOCALIZED): Treat uClibc like a non-glibc platform.
+	* printf-parse.c (PRINTF_PARSE): Likewise.
+	* vasnprintf.c (decimal_point_char): Treat uClibc like glibc.
+	(VASNPRINTF): Treat uClibc like a non-glibc platform.
+	Reported by Mike Frysinger <vapier@gentoo.org>.
+
+2010-11-20  Bruno Haible  <bruno@clisp.org>
+
+	Fix a comment.
+	* vasnprintf.c (VASNPRINTF): Fix comment.
+
+2010-11-07  Bruno Haible  <bruno@clisp.org>
+
+	vasnprintf: Support I flag on glibc systems.
+	* printf-parse.h (FLAG_LOCALIZED): New macro.
+	* printf-parse.c (PRINTF_PARSE): Handle the 'I' flag.
+	* vasnprintf.c (VASNPRINTF): Pass the 'I' flag on to the system's
+	snprintf function.
+
+2010-11-07  Bruno Haible  <bruno@clisp.org>
+
+	Rename autosprintf.h.in to autosprintf.in.h.
+	* autosprintf.in.h: New file, renamed from autosprintf.h.in.
+	* Makefile.am (autosprintf.h, EXTRA_DIST): Update.
+
+2010-10-14  Bruno Haible  <bruno@clisp.org>
+
+	vasnprintf: Don't set errno to 0.
+	* vasnprintf.c (VASNPRINTF): Save and restore errno around the block
+	that sets it to 0.
+	Reported by Gianluigi Tiesi <sherpya@netfarm.it>.
+
 2010-06-04  Bruno Haible  <bruno@clisp.org>
 
 	* gettext-0.18.1 released.

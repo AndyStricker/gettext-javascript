@@ -1,20 +1,18 @@
 /* Determine name of the currently selected locale.
    Copyright (C) 1995-1999, 2000-2010 Free Software Foundation, Inc.
 
-   This program is free software; you can redistribute it and/or modify it
-   under the terms of the GNU Library General Public License as published
-   by the Free Software Foundation; either version 2, or (at your option)
-   any later version.
+   This program is free software: you can redistribute it and/or modify
+   it under the terms of the GNU Lesser General Public License as published by
+   the Free Software Foundation; either version 2.1 of the License, or
+   (at your option) any later version.
 
    This program is distributed in the hope that it will be useful,
    but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-   Library General Public License for more details.
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU Lesser General Public License for more details.
 
-   You should have received a copy of the GNU Library General Public
-   License along with this program; if not, write to the Free Software
-   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
-   USA.  */
+   You should have received a copy of the GNU Lesser General Public License
+   along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
 
 /* Written by Ulrich Drepper <drepper@gnu.org>, 1995.  */
 /* Win32 code written by Tor Lillqvist <tml@iki.fi>.  */
@@ -2607,7 +2605,7 @@ gl_locale_name_thread_unsafe (int category, const char *categoryname)
     locale_t thread_locale = uselocale (NULL);
     if (thread_locale != LC_GLOBAL_LOCALE)
       {
-#  if __GLIBC__ >= 2
+#  if __GLIBC__ >= 2 && !defined __UCLIBC__
         /* Work around an incorrect definition of the _NL_LOCALE_NAME macro in
            glibc < 2.12.
            See <http://sourceware.org/bugzilla/show_bug.cgi?id=10968>.  */
@@ -2771,7 +2769,7 @@ gl_locale_name_thread (int category, const char *categoryname)
    However it does not specify the exact format.  Neither do SUSV2 and
    ISO C 99.  So we can use this feature only on selected systems (e.g.
    those using GNU C Library).  */
-#if defined _LIBC || (defined __GLIBC__ && __GLIBC__ >= 2)
+#if defined _LIBC || ((defined __GLIBC__ && __GLIBC__ >= 2) && !defined __UCLIBC__)
 # define HAVE_LOCALE_NULL
 #endif
 

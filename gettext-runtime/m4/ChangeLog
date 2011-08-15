@@ -1,3 +1,62 @@
+2011-07-07  Bruno Haible  <bruno@clisp.org>
+
+	Avoid literal tabs.
+	* po,m4 (AM_PO_SUBDIRS, AM_POSTPROCESS_PO_MAKEFILE): Use a shell
+	variable containing a tab instead of a literal tab.
+	Reported by Jim Meyering.
+
+2011-06-04  Bruno Haible  <bruno@clisp.org>
+
+	Ensure intmax_t gets defined in libasprintf.
+	* Makefile.am (EXTRA_DIST): Add intmax_t.m4.
+
+2011-02-18  Eric Blake  <eblake@redhat.com>
+
+	longlong: skip, rather than fail, on cross-compilation
+	* longlong.m4 (AC_TYPE_LONG_LONG_INT): Avoid aborting configure
+	when cross-compiling; regression from 2011-02-16.
+
+2011-02-16  Paul Eggert  <eggert@cs.ucla.edu>
+
+	longlong: tune, particularly for common case of c99
+	* longlong.m4 (AC_TYPE_LONG_LONG_INT): Don't bother compiling
+	or running anything if c99, or if unsigned long long int does not
+	work.  In either case, we know the answer without further tests.
+	Do not compile _AC_TYPE_LONG_LONG_SNIPPET twice.  Instead, compile
+	it at most once, and use its results for both long long int and
+	unsigned long long int.  This is more likely to be efficient in
+	the common case where the program wants to check for both long
+	long int and unsigned long long int.
+	(AC_TYPE_UNSIGNED_LONG_LONG_INT): Don't bother compiling if c99,
+	since the answer is already known.
+
+2010-12-04  Bruno Haible  <bruno@clisp.org>
+
+	Put more information about failed tests into the test return codes.
+	* intdiv0.m4 (gt_INTDIV0): Change test program so that it returns an
+	enumerated value (0, 1, 2, 3, 4, ...).
+	* fcntl-o.m4 (gl_FCNTL_O_FLAGS): Change test program so that it returns
+	a bit mask.
+	* iconv.m4 (AM_ICONV_LINK): Likewise.
+
+2010-11-26  Bruno Haible  <bruno@clisp.org>
+
+	* iconv.m4 (AM_ICONV): If the gnulib module 'iconv-h' is present, set
+	ICONV_CONST.
+
+2010-11-20  Bruno Haible  <bruno@clisp.org>
+
+	Ensure that <features.h> is included before __GLIBC__ is tested.
+	* intl.m4 (AM_INTL_SUBDIR): Test for <features.h>.
+	Reported by Mike Frysinger <vapier@gentoo.org>.
+
+2010-11-20  Bruno Haible  <bruno@clisp.org>
+
+	Port to uClibc.
+	* glibc21.m4 (gl_GLIBC21): Treat uClibc like glibc.
+	* glibc2.m4 (gt_GLIBC2): Treat uClibc like a non-glibc platform.
+	Reported by Mike Frysinger <vapier@gentoo.org>.
+
 2010-10-04  Bruno Haible  <bruno@clisp.org>
 
 	Make option --with-libpth-prefix work.

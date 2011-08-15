@@ -6368,6 +6368,7 @@ Languages with this property include:
 @item Slavic family
 Russian, @c    143.6 million speakers
 Ukrainian, @c   37.0 million speakers
+Belarusian, @c   8.6 million speakers
 Serbian, @c      7.0 million speakers
 Croatian @c      5.5 million speakers
 @end table
@@ -7015,12 +7016,12 @@ ready to work together at improving the results they obtain.
 
 Some people wonder if using GNU @code{gettext} necessarily brings their
 package under the protective wing of the GNU General Public License or
-the GNU Library General Public License, when they do not want to make
+the GNU Lesser General Public License, when they do not want to make
 their program free, or want other kinds of freedom.  The simplest
 answer is ``normally not''.
 
 The @code{gettext-runtime} part of GNU @code{gettext}, i.e.@: the
-contents of @code{libintl}, is covered by the GNU Library General Public
+contents of @code{libintl}, is covered by the GNU Lesser General Public
 License.  The @code{gettext-tools} part of GNU @code{gettext}, i.e.@: the
 rest of the GNU @code{gettext} package, is covered by the GNU General
 Public License.
@@ -7916,11 +7917,11 @@ has platform dependent support for determining the locale's character
 encoding and therefore needs to identify the platform.
 
 You can obtain the newest version of @file{config.guess} and
-@file{config.sub} from the CVS of the @samp{config} project at
+@file{config.sub} from the @samp{config} project at
 @file{http://savannah.gnu.org/}. The commands to fetch them are
 @smallexample
-$ wget 'http://savannah.gnu.org/cgi-bin/viewcvs/*checkout*/config/config/config.guess'
-$ wget 'http://savannah.gnu.org/cgi-bin/viewcvs/*checkout*/config/config/config.sub'
+$ wget -O config.guess 'http://git.savannah.gnu.org/gitweb/?p=config.git;a=blob_plain;f=config.guess;hb=HEAD'
+$ wget -O config.sub 'http://git.savannah.gnu.org/gitweb/?p=config.git;a=blob_plain;f=config.sub;hb=HEAD'
 @end smallexample
 @noindent
 Less recent versions are also contained in the GNU @code{automake} and
@@ -7988,6 +7989,18 @@ ACLOCAL_AMFLAGS = -I m4
 
 @noindent
 to your top level @file{Makefile.am}.
+
+If you are using GNU @code{automake} 1.10 or newer, it is even easier:
+Add the line
+
+@example
+ACLOCAL_AMFLAGS = --install -I m4
+@end example
+
+@noindent
+to your top level @file{Makefile.am}, and run @samp{aclocal --install -I m4}.
+This will copy the needed files to the @file{m4/} subdirectory automatically,
+before updating @file{aclocal.m4}.
 
 These macros check for the internationalization support functions
 and related informations.  Hopefully, once stabilized, these macros
@@ -12074,7 +12087,7 @@ particular file or directory.  Here is a summary:
 @itemize @bullet
 @item
 The @code{libintl} and @code{libasprintf} libraries are covered by the
-GNU Library General Public License (LGPL).  
+GNU Lesser General Public License (LGPL).  
 A copy of the license is included in @ref{GNU LGPL}.
 
 @item

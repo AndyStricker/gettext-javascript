@@ -1,3 +1,23 @@
+2011-06-03  Bruno Haible  <bruno@clisp.org>
+
+	Update after gl_PROG_ANSI_CXX changed in gnulib.
+	* configure.ac: Test whether CXX is "no", not ":".
+
+2011-06-03  Bruno Haible  <bruno@clisp.org>
+
+	Fix link error on Cygwin 1.5.x.
+	* woe32dll/gettextsrc-exports.c: Add color_test_mode.
+
+2011-01-28  Bruno Haible  <bruno@clisp.org>
+
+	Add a comment.
+	* woe32dll/export.h: Add a reference to the woe32dll writeup.
+
+2010-10-10  Bruno Haible  <bruno@clisp.org>
+
+	Rely more on libtool.
+	* configure.ac (LTNOUNDEF): Remove variable.
+
 2010-07-31  Bruno Haible  <bruno@clisp.org>
 
 	Use new ansi-c++.m4 from gnulib.

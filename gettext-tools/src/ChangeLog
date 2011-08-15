@@ -1,3 +1,106 @@
+2011-07-29  Bruno Haible  <bruno@clisp.org>
+
+	Fix xgettext crash when extracting a message with plural that is
+	excluded.
+	* xgettext.h (remember_a_message): Document the return value.
+	* xgettext.c (arglist_parser_done): Handle the case where
+	remember_a_message returned NULL.
+	* x-smalltalk.c (extract_smalltalk): Likewise.
+	* x-ycp.c (extract_parenthesized): Likewise.
+	Reported by Jean-Luc Coulon <jean-luc.coulon@wanadoo.fr> via
+	Santiago Vila <sanvila@unex.es>.
+
+2011-06-13  Bruno Haible  <bruno@clisp.org>
+
+	Avoid compilation error on Solaris 7 with cc.
+	* msgl-fsearch.c (SHORT_MSG_MAX): Define more directly with SunPRO C.
+
+2011-06-04  Bruno Haible  <bruno@clisp.org>
+
+	Avoid link error when linking statically on AIX 7.
+	* Makefile.am (xgettext_LDADD): Add LTLIBICONV.
+
+2011-04-13  Bruno Haible  <bruno@clisp.org>
+
+	* msgcat.c (usage): Fix description of --use-first.
+	* msgcomm.c (usage): Fix typo.
+	Reported by Matthijs Kooijman.
+
+2011-06-04  Bruno Haible  <bruno@clisp.org>
+
+	Update after __attibute__ is no longer defined by gnulib.
+	* msgl-check.c (formatstring_error_logger): Use __attribute__ only with
+	compiler versions that support it.
+
+2011-06-02  Bruno Haible  <bruno@clisp.org>
+
+	Use u8_mbtoucr instead of u8_mbtouc in some places.
+	* po-lex.c (mbfile_getc): Call u8_mbtoucr instead of u8_mbtouc.
+	* x-csharp.c (phase2_getc): Likewise.
+	* x-python.c (phase2_getc): Likewise.
+	Needed after libunistring changed on 2010-11-13.
+
+2011-06-02  Bruno Haible  <bruno@clisp.org>
+
+	Update after gnulib changed.
+	* msgexec.c: Include spawn-pipe.h instead of pipe.h.
+	* msginit.c: Likewise.
+	* read-csharp.c: Likewise.
+	* read-java.c: Likewise.
+	* read-resources.c: Likewise.
+	* read-tcl.c: Likewise.
+	* write-resources.c: Likewise.
+
+2010-11-20  Bruno Haible  <bruno@clisp.org>
+
+	Port to uClibc.
+	* write-po.c (wrap): Treat uClibc like a non-glibc platform.
+	* format-c-parse.h (HANDLE_I_FLAG): Likewise.
+	* po-charset.c (po_lex_charset_set): Likewise.
+	* recode-sr-latin.c (process): Likewise.
+	* x-python.c (set_current_file_source_encoding): Likewise.
+	* xgettext.c (main): Likewise.
+
+2010-11-13  Ihar Hrachyshka  <ihar.hrachyshka@gmail.com>  (tiny change)
+
+	* plural-table.c (plural_table): Added Belarusian, copied from Russian
+	and Ukrainian.
+
+2010-11-07  Bruno Haible  <bruno@clisp.org>
+
+	format-c.c: Share code with libintlext.
+	* format-c-parse.h: New file, extracted from format-c.c.
+	* format-c.c: Include it.
+	(format_parse_entrails): Remove function.
+	* Makefile.am (FORMAT_SOURCE): Add format-c-parse.h.
+	* FILES: Update.
+
+2010-11-07  Bruno Haible  <bruno@clisp.org>
+
+	format-c.c: Prepare for sharing code with libintlext.
+	* format-c.c: Move INVALID_* macros.
+	(IF_OOM): New macro.
+	(SYSDEP_SEGMENTS_PROCESSED): New macro.
+	(FAT_BASIC_MASK): New enumeration value.
+	(HANDLE_I_FLAG): New macro.
+	(format_parse_entrails): New function, extracted from format_parse.
+	Use the IF_OOM, SYSDEP_SEGMENTS_PROCESSED, HANDLE_I_FLAG macros. Handle
+	I64 as a size specifier on native Win32.
+	(format_parse): Rewritten to call format_parse_entrails.
+
+2010-11-07  Bruno Haible  <bruno@clisp.org>
+
+	format-c.c: Prepare for sharing code with libintlext.
+	* format-c.c (INVALID_ANGLE_BRACKET, INVALID_IGNORED_ARGUMENT): New
+	macros.
+	(format_parse): Use them.
+
+2011-06-07  Bruno Haible  <bruno@clisp.org>
+
+	Rely more on libtool.
+	* Makefile.am (libgettextsrc_la_LDFLAGS): Use -no-undefined always.
+	Don't use @LTNOUNDEF@.
+
 2010-06-06  Bruno Haible  <bruno@clisp.org>
 
 	Bug fixes in libgettextpo.
