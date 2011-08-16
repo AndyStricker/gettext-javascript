@@ -1435,7 +1435,7 @@ phase5_get (token_ty *tp)
               }
             buffer[bufpos] = '\0';
             tp->string = xstrdup (buffer);
-            strncpy(last_token_symbol, buffer, 512);
+            strncpy(last_token_symbol, buffer, sizeof(last_token_symbol) - 1);
             tp->type = last_token_type = token_type_symbol;
             return;
           }
@@ -1497,7 +1497,7 @@ phase5_get (token_ty *tp)
            * return, as it is a regex then */
           if ((
               last_token_type == token_type_symbol &&
-              strcmp("return", last_token_symbol) != 0
+              strncmp("return", last_token_symbol, 6) != 0
               ) ||
               last_token_type == token_type_rparen ||
               last_token_type == token_type_rbracket)
