@@ -1009,7 +1009,7 @@ phase7_getuc (int quote_char, unsigned int *backslash_counter)
           case '\n':
             continue;
           case '\\':
-            ++*backslash_counter;
+            *backslash_counter = 0;
             return UNICODE (c);
           case '\'': case '"':
             *backslash_counter = 0;
@@ -1132,6 +1132,7 @@ phase7_getuc (int quote_char, unsigned int *backslash_counter)
               return UNICODE (n);
             }
           }
+
     }
 }
 
